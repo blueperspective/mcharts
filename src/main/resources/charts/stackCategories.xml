@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chartDefinition name="Evolution des catégories">
+	<description>
+		Evolution des catégories (zones empilées)
+	</description>
+	<aggregator type="KindAggregator">
+		<parameter name="dimension" value="MONTH" />
+		<parameter name="dimension" value="Category" />
+	</aggregator>
+	<chart type="StackedAreasChart">
+	</chart>
+</chartDefinition>

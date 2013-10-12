@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chartDefinition name="Part des catégories">
+	<description>
+		Part des catégories sur l'avant dernier mois, restreint aux 5 catégories
+		les plus importantes
+	</description>
+	<criteria type="AndListCriteria">
+		<criteria type="PeriodCriteria">
+			<parameter name="startDate" value="$date:-2" />
+			<parameter name="endDate" value="$date:-1" />
+		</criteria>
+	</criteria>
+	<aggregator type="KindAggregator">
+		<parameter name="dimension" value="Category" />
+	</aggregator>
+	<restriction type="GlobalNFirstRestriction">
+		<parameter name="n" value="5" />
+	</restriction>
+	<chart type="PieChart">
+	</chart>
+</chartDefinition>

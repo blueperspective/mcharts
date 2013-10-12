@@ -1,0 +1,706 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\rightmargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MCharts : General Functional Specifications
+\end_layout
+
+\begin_layout Part
+Core
+\end_layout
+
+\begin_layout Section
+Core
+\end_layout
+
+\begin_layout Subsection
+Data representation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Account
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A set of transactions
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Category
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A category of income or outcome like 
+\begin_inset Quotes eld
+\end_inset
+
+Car
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Health
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Salaries
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Payee
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The payed enterprise or person
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Transaction
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A single payment: date, amount, category, payee
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Acounting objects
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data manipulation
+\end_layout
+
+\begin_layout Subsubsection
+Criteria
+\end_layout
+
+\begin_layout Standard
+A criteria is an object to select a subset of data.
+ A criteria is composed of base criteria and compound criteria.
+\end_layout
+
+\begin_layout Itemize
+A base criteria is about period or category names.
+\end_layout
+
+\begin_layout Itemize
+A compound criteria contains one or more criteria : the negation criteria
+ inverse a given criteria ; the and list criteria makes a logical and with
+ a list of criteria.
+\end_layout
+
+\begin_layout Subsubsection
+Aggregation
+\end_layout
+
+\begin_layout Standard
+Aggregation is the fact to sum values on a given accounting element, i.e.
+ a category, a payee or an account.
+ All accounting objects may be part of an aggregation, and are called 
+\begin_inset Quotes eld
+\end_inset
+
+dimensions
+\begin_inset Quotes erd
+\end_inset
+
+ of the aggregation.
+ An aggregation is represented as a tree, see figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1D-aggregation"
+
+\end_inset
+
+ for a single dimension aggregation representation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename aggregation1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1D-aggregation"
+
+\end_inset
+
+1D aggregation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2D-aggregation"
+
+\end_inset
+
+ shows a 2 dimensionnal aggregation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename aggregation2.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2D-aggregation"
+
+\end_inset
+
+2D aggregation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Restriction
+\end_layout
+
+\begin_layout Standard
+The restriction is applied to an aggregation and is similar to a criteria
+ in the idea : it is used to select only a subset of the aggregated values.
+\end_layout
+
+\begin_layout Standard
+The identified restrictions are shown in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Identified-restrictions"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Id
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NTopRestriction
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Restricts the elements to the top N first bottom dimensions.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Identified-restrictions"
+
+\end_inset
+
+Identified restrictions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename restriction1.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Restriction-algorithm"
+
+\end_inset
+
+Restriction algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Charts
+\end_layout
+
+\begin_layout Subsection
+Templates
+\end_layout
+
+\begin_layout Standard
+The templates allows the user to have pre-configured criteria, aggregator,
+ restriction and chart type, reducing the configuration part.
+ Predefined templates are proposed by default, for most common charts.
+ Custom template chart can also be created by the user.
+\end_layout
+
+\begin_layout Subsection
+Chart save
+\end_layout
+
+\begin_layout Standard
+A rendered chart can be saved, to view it later without re-configuring the
+ chart criteria, restrictions, etc.
+ All charts can be exported to images.
+\end_layout
+
+\begin_layout Part
+Ui
+\end_layout
+
+\begin_layout Section
+Main Frame
+\end_layout
+
+\begin_layout Standard
+The main frame is composed of:
+\end_layout
+
+\begin_layout Itemize
+a menu;
+\end_layout
+
+\begin_layout Itemize
+a toolbar;
+\end_layout
+
+\begin_layout Itemize
+a tree view to show template charts and saved charts;
+\end_layout
+
+\begin_layout Itemize
+a panel to select criteria, aggregator, restiction and chart type;
+\end_layout
+
+\begin_layout Itemize
+a chart area where the chart(s) will be rendered.
+\end_layout
+
+\begin_layout Subsection
+Menu
+\end_layout
+
+\begin_layout Standard
+The menu provides access to all dialogs and tools of the application.
+\end_layout
+
+\begin_layout Subsection
+Toolbar
+\end_layout
+
+\begin_layout Standard
+The toolbar provides access to the major dialogs and tools of the application.
+\end_layout
+
+\begin_layout Subsection
+TreeView
+\end_layout
+
+\begin_layout Standard
+The treeview, located in the left hand side of the document, shows the list
+ of chart templates and saved charts for the opened account file.
+\end_layout
+
+\begin_layout Standard
+While a double-click shows the chart pane with pre-configured values and
+ no chart, a double click on a saved chart shows the saved chart.
+\end_layout
+
+\begin_layout Subsection
+Chart pane
+\end_layout
+
+\begin_layout Standard
+The chart pane allows to select criteria, aggregation, restriction and chart
+ type used to compute and render a chart.
+\end_layout
+
+\begin_layout Subsection
+Chart area
+\end_layout
+
+\begin_layout Standard
+The chart area displays the chart, result of the chart pane configuration.
+ The chart area shows a pane with the a table of selected transactions (see
+ section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Explorer"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Explorer"
+
+\end_inset
+
+Explorer
+\end_layout
+
+\begin_layout Standard
+The explorer component is a table to inspect a set of transactions.
+\end_layout
+
+\begin_layout Standard
+The goals of the explorer are:
+\end_layout
+
+\begin_layout Itemize
+to display the transactions of the loaded file and apply criteria on the
+ transaction;
+\end_layout
+
+\begin_layout Itemize
+to display the transactions used in a chart.
+\end_layout
+
+\begin_layout Section
+Configuration
+\end_layout
+
+\begin_layout Section
+LayoutEditor
+\end_layout
+
+\begin_layout Section
+TemplateEditor
+\end_layout
+
+\end_body
+\end_document

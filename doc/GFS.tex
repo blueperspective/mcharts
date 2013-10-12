@@ -1,0 +1,111 @@
+%% LyX 1.6.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+\usepackage{babel}
+
+\begin{document}
+
+\title{GrisbiCharts : General Functional Specifications}
+
+\maketitle
+
+\part{Core}
+
+
+\section{Accounting objects}
+
+
+\subsection{Data manipulation}
+
+
+\subsubsection{Criteria}
+
+A criteria is an object to select a subset of data. A criteria is
+composed of base criteria and compound criteria.
+
+A base criteria is about period or category names.
+
+A compound criteria contains one or more criteria : the negation criteria
+inverse a given criteria ; the and list criteria makes a logical and
+with a list of criteria.
+
+
+\subsubsection{Aggregation}
+
+Aggregation is the fact
+
+Identified aggregations
+
+\begin{tabular}{|c|c|c|}
+\hline 
+Id & Name & Description\tabularnewline
+\hline
+\hline 
+ & AmountAggregator & \tabularnewline
+\hline 
+ & AmountPeriodAggregator & \tabularnewline
+\hline
+\end{tabular}
+
+Accounting matrix
+
+The accounting matrix is the future of the aggregation, with a generic
+aggregation object. 
+
+For now, you have to select either the AmountAggregtor (1d) or the
+AmountPeriodAggregator (2d), and applied restrictions (see ) depends
+on the type of aggregator. 
+
+The aim of the accounting matrix is to have a multi-dimentional array
+of values.
+
+The following table shows how an accounting matrix is representated:
+
+\begin{tabular}{|c|c|c|}
+\hline 
+Period & Category & Value\tabularnewline
+\hline
+\hline 
+01/01/09 & food & 150.00\tabularnewline
+\hline 
+01/01/09 & car & 200.00\tabularnewline
+\hline 
+01/01/09 & house & 600.00\tabularnewline
+\hline 
+01/02/09 & food & 160.00\tabularnewline
+\hline 
+01/02/09 & car & 250.00\tabularnewline
+\hline 
+01/02/09 & house & 550.00\tabularnewline
+\hline
+\end{tabular}
+
+
+\subsubsection{Restriction}
+
+The restriction is applied to an aggregation and is similar to a criteria
+in the idea : it is used to select only a subset of the aggregated
+values.
+
+Identified restrictions
+
+\begin{tabular}{|c|c|c|}
+\hline 
+Id & Name & Description\tabularnewline
+\hline
+\hline 
+ & NTopRestriction & Restricts the elements to the top N firsts.\tabularnewline
+\hline
+\end{tabular}
+
+
+\part{Ui}
+\end{document}

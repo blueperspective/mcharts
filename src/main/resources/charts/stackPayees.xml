@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chartDefinition name="Evolution des tiers">
+	<description>
+		Evolution des tiers (zones empilées)
+	</description>
+	<aggregator type="KindAggregator">
+		<parameter name="dimension" value="MONTH" />
+		<parameter name="dimension" value="Payee" />
+	</aggregator>
+	<chart type="StackedAreasChart">
+	</chart>
+</chartDefinition>

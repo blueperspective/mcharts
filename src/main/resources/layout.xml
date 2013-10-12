@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+	<category name="Camemberts">
+		<chart name="Part des catégories" file="pieCategory.xml" />
+		<chart name="Part des tiers" file="piePayee.xml" />
+	</category>
+	<category name="Courbes">
+		<chart name="Evolution du solde" file="lineAmount.xml" />
+		<chart name="Evolution des catégories" file="stackCategories.xml" />
+		<chart name="Evolution des tiers" file="stackPayees.xml" />
+	</category>
+</layout>

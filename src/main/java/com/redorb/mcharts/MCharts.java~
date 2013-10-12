@@ -1,0 +1,31 @@
+package com.redorb.mcharts;
+
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import com.redorb.mcharts.ui.Ui;
+import com.redorb.mcharts.ui.dialogs.MainFrame;
+
+public class MCharts {
+
+	/**
+	 * Runs the application
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Ui.getConfiguration().load();
+					new MainFrame();
+				} catch (IOException e) {
+					//log.error(e.getMessage(), e);
+					JOptionPane.showMessageDialog(null, "Exception occured while launching the application (" + e.getMessage() + ")");
+				}
+			}
+		});
+	}
+}

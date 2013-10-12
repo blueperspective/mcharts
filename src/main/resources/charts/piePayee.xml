@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chartDefinition name="Part des tiers">
+	<description>
+		Part des catégories sur l'avant dernier mois, restreint aux 5 tiers les
+		plus importants
+	</description>
+	<criteria type="AndListCriteria">
+		<criteria type="PeriodCriteria">
+			<parameter name="startDate" value="$date:-2" />
+			<parameter name="endDate" value="$date:-1" />
+		</criteria>
+	</criteria>
+	<aggregator type="KindAggregator">
+		<parameter name="dimension" value="Payee" />
+	</aggregator>
+	<!--
+		<restriction type="GlobalNFirstRestriction"> <parameter name="n"
+		value="5" /> </restriction>
+	-->
+	<chart type="PieChart">
+	</chart>
+</chartDefinition>

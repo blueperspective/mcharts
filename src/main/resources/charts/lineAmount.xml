@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chartDefinition name="Evolution du solde">
+	<description>
+		Evolution du solde
+	</description>
+	<aggregator type="GlobalAggregator">
+		<parameter name="dimension" value="MONTH" />
+		<parameter name="dimension" value="Account" />
+	</aggregator>
+	<chart type="LinesChart">
+	</chart>
+</chartDefinition>
