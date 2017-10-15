@@ -53,6 +53,7 @@
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
+\bullet 0 0 0 -1
 \tracking_changes false
 \output_changes false
 \html_math_output 0
