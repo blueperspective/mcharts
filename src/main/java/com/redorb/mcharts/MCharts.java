@@ -42,7 +42,6 @@ public class MCharts {
 					
 					Conf.getInstance().load();
 					
-					//new MainFrame();
 					new MchartFrame();
 					
 				} catch (IOException e) {

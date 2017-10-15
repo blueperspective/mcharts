@@ -3,13 +3,10 @@ package com.redorb.mcharts.ui.explorer;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,8 +16,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.redorb.commons.ui.GBC;
-import com.redorb.commons.ui.Utils;
 import com.redorb.commons.ui.I18n;
+import com.redorb.commons.ui.Utils;
 import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.core.accounting.Category;
 
@@ -94,7 +91,7 @@ public class CategoriesExplorerPane extends JPanel {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						collapseActionPerformed(evt);
+						collapseActionPerformed();
 					}},
 					true);
 		
@@ -105,7 +102,7 @@ public class CategoriesExplorerPane extends JPanel {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						expandActionPerformed(evt);
+						expandActionPerformed();
 					}},
 					true);
 	}
@@ -145,13 +142,11 @@ public class CategoriesExplorerPane extends JPanel {
 
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("");
 
-		Collection<Category> categories = Core.getInstance().getCategories().values();
-
-		for (Category c : categories) {
+		for (Category c : Core.getInstance().getCategories()) {
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(c.getName());
 
 			if (c.getSubCategories() != null) {
-				for (Category s : c.getSubCategories().values()) {
+				for (Category s : c.getSubCategories()) {
 					DefaultMutableTreeNode subNode = new DefaultMutableTreeNode(s.getName());
 					node.add(subNode);
 				}
@@ -163,10 +158,10 @@ public class CategoriesExplorerPane extends JPanel {
 		
 		treeCategories.setModel(treeModel);
 		
-		expandActionPerformed(null);
+		expandActionPerformed();
 	}
 	
-	private void expandActionPerformed(ActionEvent evt) {
+	private void expandActionPerformed() {
 		
 		int n = treeCategories.getRowCount();
 		
@@ -175,28 +170,10 @@ public class CategoriesExplorerPane extends JPanel {
 		}
 	}
 	
-	private void collapseActionPerformed(ActionEvent evt) {
+	private void collapseActionPerformed() {
 		
 		for (int i = 0; i < treeCategories.getRowCount(); i++) {
 			treeCategories.collapseRow(i);
 		}
-	}
-
-	/*
-	 * Getters/Setters
-	 */
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		JFrame frame = new JFrame();
-		JPanel panel = new CategoriesExplorerPane();
-
-		frame.setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
-		frame.setContentPane(panel);
-		frame.setSize(600, 300);
-		frame.setVisible(true);
 	}
 }

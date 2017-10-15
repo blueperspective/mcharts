@@ -12,6 +12,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import com.redorb.commons.ui.I18n;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 
+/**
+ * 2D stacked area chart creator.
+ */
 public class StackedAreasChart implements IChartCreator {
 
 	/*
@@ -33,7 +36,7 @@ public class StackedAreasChart implements IChartCreator {
 
 		// chart
 
-		Object dim1 = tree.getDimensions().get(0);
+		Object dim1 = tree.getDimensions()[0];
 
 		JFreeChart chart = ChartFactory.createStackedAreaChart(
 				title,

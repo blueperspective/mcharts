@@ -2,8 +2,6 @@ package com.redorb.mcharts.utils;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Get dates of week start, month start, etc. from a given date.
@@ -15,10 +13,7 @@ public class TimePeriodManipulation {
 	 */
 
 	private static final Calendar calendar = Calendar.getInstance();
-	
-	private static final Map<String, TimePeriodType> TIME_PERIOD_TYPES =
-		new HashMap<String, TimePeriodType>();
-	
+		
 	/**
 	 * Get the week start date.
 	 * @param date
@@ -109,33 +104,5 @@ public class TimePeriodManipulation {
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		
 		return calendar.getTime();
-	}
-
-	/**
-	 * Create a TimePeriodType from a string.
-	 * @return TimePeriodType
-	 */
-	public static TimePeriodType fromString(String strTimePeriodType) {
-
-		// if the map timePeriodTypes is empty, fills it (=> done only once)
-		
-		if (TIME_PERIOD_TYPES.isEmpty()) {
-
-			TIME_PERIOD_TYPES.put("WEEK", TimePeriodType.WEEK);
-			TIME_PERIOD_TYPES.put("MONTH", TimePeriodType.MONTH);
-			TIME_PERIOD_TYPES.put("TRIMESTER", TimePeriodType.TRIMESTER);
-			TIME_PERIOD_TYPES.put("SEMESTER", TimePeriodType.SEMESTER);
-			TIME_PERIOD_TYPES.put("YEAR", TimePeriodType.YEAR);
-		}
-
-		// returns the TimePeriodType of NO_PERIOD if no correspondence is found
-		
-		TimePeriodType timePeriodType = TimePeriodType.NO_PERIOD;
-
-		if (TIME_PERIOD_TYPES.containsKey(strTimePeriodType)) {
-			timePeriodType = TIME_PERIOD_TYPES.get(strTimePeriodType);
-		}
-
-		return timePeriodType;
 	}
 }

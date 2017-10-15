@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +18,6 @@ import javax.swing.JScrollPane;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.redorb.commons.ui.GBC;
 import com.redorb.commons.ui.I18n;
@@ -35,6 +32,7 @@ import com.redorb.mcharts.data.criteria.structure.ICriteria;
 import com.redorb.mcharts.data.criteria.structure.PeriodCriteria;
 import com.redorb.mcharts.data.restriction.GlobalNFirstRestriction;
 import com.redorb.mcharts.data.restriction.IRestriction;
+import com.redorb.mcharts.ui.Conf;
 import com.redorb.mcharts.ui.charts.BalanceChart;
 import com.redorb.mcharts.ui.charts.IChartCreator;
 import com.redorb.mcharts.ui.charts.Pie3DChart;
@@ -47,8 +45,6 @@ public class DashboardPanel extends JPanel {
 	/*
 	 * Attributes
 	 */
-
-	private final Logger log = LoggerFactory.getLogger(DashboardPanel.class);
 
 	private boolean isRendered = false;
 
@@ -87,7 +83,8 @@ public class DashboardPanel extends JPanel {
 		accountSelector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				render();
+				Conf.getProps().setProperty(Conf.LAST_ACCOUNT, accountSelector.getSelectedElement().getName());
+				render(false);
 			}
 		});
 
@@ -138,13 +135,33 @@ public class DashboardPanel extends JPanel {
 		return isRendered;
 	}
 
-	public void render() {
+	public void render(boolean firstTime) {
 
 		isRendered = true;
+		
+		accountSelector.setObjets(Core.getInstance().getAccounts());
 
-		accountSelector.setObjets(new ArrayList<Account>(Core.getInstance().getAccounts().values()));
+		if (firstTime) {
+
+			String accountName = Conf.getProps().getString(Conf.LAST_ACCOUNT);
+			Account account = null;
+
+			if (accountName != null) {
+				for (Account a : Core.getInstance().getAccounts()) {
+					if (accountName.equals(a.getName())) {
+						account = a;
+						break;
+					}
+				}
+			}
+
+			if (account != null) {
+				accountSelector.setSelectedElement(account);
+			}
+		}
 
 		renderBalance(accountSelector.getSelectedElement());
+
 		filterTransaction();
 		renderLastMonthOperations();
 		renderCategoryPayee();
@@ -191,7 +208,7 @@ public class DashboardPanel extends JPanel {
 				I18n.getMessage("DashboardPanel.transactions", 
 						dateFormat.format(startDate),
 						balance));
-		
+
 		pnlTransactions.setTransactions(filteredTransactions);
 	}
 
@@ -222,16 +239,9 @@ public class DashboardPanel extends JPanel {
 		if (pnlPayeeChart != null) { remove(pnlPayeeChart); }
 
 		// aggregator
+		KindAggregator categoryAggregator = new KindAggregator(Dimension.CATEGORY);
 
-		List<Dimension> categoryDimensions = new ArrayList<>();
-		categoryDimensions.add(Dimension.CATEGORY);
-
-		KindAggregator categoryAggregator = new KindAggregator(categoryDimensions);
-
-		List<Dimension> payeeDimensions = new ArrayList<>();
-		payeeDimensions.add(Dimension.PAYEE);
-
-		KindAggregator payeeAggregator = new KindAggregator(payeeDimensions);
+		KindAggregator payeeAggregator = new KindAggregator(Dimension.PAYEE);
 
 		// chart
 

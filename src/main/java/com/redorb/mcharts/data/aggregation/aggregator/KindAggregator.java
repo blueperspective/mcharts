@@ -3,12 +3,16 @@ package com.redorb.mcharts.data.aggregation.aggregator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.redorb.mcharts.core.accounting.Category;
 import com.redorb.mcharts.core.accounting.Transaction;
 import com.redorb.mcharts.data.aggregation.Dimension;
 import com.redorb.mcharts.data.aggregation.structure.AccountingLeaf;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 import com.redorb.mcharts.perf.Perf;
+import com.redorb.mcharts.ui.charts.ChartPanelCreator;
 
 /**
  * A tree aggregator aggregates transactions using a list of dimensions and
@@ -22,17 +26,21 @@ public class KindAggregator implements IAggregator {
 	 */
 	
 	/** list of dimensions of the aggregator */
-	private List<Dimension> dimensions = null;
+	private Dimension[] dimensions = null;
 	
 	private AccountingTree incomeTree = null;
 	
 	private AccountingTree outcomeTree = null;
 	
+	private final Logger log = LoggerFactory.getLogger(ChartPanelCreator.class);
+	
+	private boolean skipInternalTransactions = true;
+	
 	/*
 	 * Ctors
 	 */
 
-	public KindAggregator(List<Dimension> dimensions) {
+	public KindAggregator(Dimension... dimensions) {
 		this.dimensions = dimensions;
 		incomeTree = new AccountingTree(dimensions);
 		outcomeTree = new AccountingTree(dimensions);
@@ -57,6 +65,10 @@ public class KindAggregator implements IAggregator {
 		// for each transaction
 		for (Transaction transaction : transactions) {
 			
+			if (transaction.getLinkedTransaction() != 0 && skipInternalTransactions) {
+				continue;
+			}
+						
 			if (transaction.getCategory().getKind() == Category.Kind.INCOME) {
 				tree = incomeTree;
 			}
@@ -67,14 +79,14 @@ public class KindAggregator implements IAggregator {
 			// get the keys of the transactions: values of the dimensions
 			
 			List<Object> keys = new ArrayList<Object>();
-
+			
 			for (Dimension dimension : dimensions) {
 				keys.add(DimensionGetter.getDimension(dimension, transaction));
 			}
 			
 			// get the amount using the keys (the getValue builds the tree)
 			
-			AccountingLeaf value = tree.getLeaf(keys);
+			AccountingLeaf value = tree.getLeaf(keys);			
 			value.add(transaction.getAmount());
 		}
 		
@@ -89,7 +101,7 @@ public class KindAggregator implements IAggregator {
 	 * @return the dimensions
 	 */
 	@Override
-	public List<Dimension> getDimensions() {
+	public Dimension[] getDimensions() {
 		return dimensions;
 	}
 
@@ -105,5 +117,15 @@ public class KindAggregator implements IAggregator {
 	 */
 	public AccountingTree getOutcomeTree() {
 		return outcomeTree;
+	}
+	
+	@Override
+	public boolean getSkipInternalTransactions() {
+		return skipInternalTransactions;
+	}
+
+	@Override
+	public void setSkipInternalTransactions(boolean value) {
+		this.skipInternalTransactions = value;
 	}
 }

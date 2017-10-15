@@ -78,7 +78,7 @@ public class AccountingTreePane extends JPanel {
 		
 		AccountingTreeModel treeModel = new AccountingTreeModel(tree);
 		treeAccounting.setModel(treeModel);
-		expandActionPerformed(null);
+		expandActionPerformed();
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class AccountingTreePane extends JPanel {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						collapseActionPerformed(evt);
+						collapseActionPerformed();
 					}});
 
 		butExpand = Utils.createButtonNoBorder(
@@ -114,7 +114,7 @@ public class AccountingTreePane extends JPanel {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent evt) {
-						expandActionPerformed(evt);
+						expandActionPerformed();
 					}});
 	}
 	
@@ -138,7 +138,7 @@ public class AccountingTreePane extends JPanel {
 		add(pnlButtons, new GBC(1, 1));
 	}
 
-	private void expandActionPerformed(ActionEvent evt) {
+	private void expandActionPerformed() {
 
 		int n = treeAccounting.getRowCount();
 
@@ -147,7 +147,7 @@ public class AccountingTreePane extends JPanel {
 		}
 	}
 
-	private void collapseActionPerformed(ActionEvent evt) {
+	private void collapseActionPerformed() {
 
 		for (int i = 0; i < treeAccounting.getRowCount(); i++) {
 			treeAccounting.collapseRow(i);

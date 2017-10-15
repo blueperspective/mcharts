@@ -83,7 +83,7 @@ public class IgnoreListPane extends JPanel implements IConfigPane {
 		comboModel.addElement(Payee.class);
 		comboModel.addElement(Transaction.class);
 
-		cmbAccountingObject.setRenderer(new MapListRenderer<Class>(Ui.getMapAccountObjectNames()));
+		cmbAccountingObject.setRenderer(new MapListRenderer(Ui.getMapAccountObjectNames()));
 		cmbAccountingObject.setModel(comboModel);
 
 		lblExpressions.setText(I18n.getMessage("ignoreListPane.jlblExpressions"));

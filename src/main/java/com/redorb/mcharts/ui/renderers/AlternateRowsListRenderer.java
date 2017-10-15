@@ -35,8 +35,8 @@ public class AlternateRowsListRenderer<E> extends JLabel implements ListCellRend
 
 	@Override
 	public Component getListCellRendererComponent(
-			JList list,
-			Object value, // value to display
+			JList<? extends E> list,
+			E value, // value to display
 			int index,    // cell index
 			boolean isSelected,  // is selected
 			boolean hasFocus)  // cell has focus?

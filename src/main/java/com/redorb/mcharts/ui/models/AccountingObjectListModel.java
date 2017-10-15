@@ -31,17 +31,17 @@ public class AccountingObjectListModel extends AbstractListModel<IAccountingObje
 	public AccountingObjectListModel(Class<? extends IAccountingObject> accountingObjectListModel) {
 		
 		if (accountingObjectListModel.equals(Account.class)) {
-			for (Account a : Core.getInstance().getAccounts().values()) {
+			for (Account a : Core.getInstance().getAccounts()) {
 				objects.add(a);
 			}
 		}
 		else if (accountingObjectListModel.equals(Category.class)) {
-			for (Category c : Core.getInstance().getCategories().values()) {
+			for (Category c : Core.getInstance().getCategories()) {
 				objects.add(c);
 			}
 		}
 		else if (accountingObjectListModel.equals(Payee.class)) {
-			for (Payee p : Core.getInstance().getPayees().values()) {
+			for (Payee p : Core.getInstance().getPayees()) {
 				objects.add(p);
 			}
 		}

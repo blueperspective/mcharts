@@ -9,13 +9,14 @@ import javax.swing.JPanel;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.redorb.commons.ui.GBC;
 import com.redorb.commons.ui.I18n;
 import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.core.accounting.Transaction;
 import com.redorb.mcharts.core.charts.IChart;
-
 import com.redorb.mcharts.data.aggregation.aggregator.GlobalAggregator;
 import com.redorb.mcharts.data.aggregation.aggregator.KindAggregator;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
@@ -28,13 +29,15 @@ public class ChartPanelCreator extends JPanel {
 	/*
 	 * Attributes
 	 */
+	
+	private final Logger log = LoggerFactory.getLogger(ChartPanelCreator.class);
 
 	/** chart container */
 	protected Container container = null;
 
 	/** criteria for selection */
 	protected IChart chart = null;
-	
+
 	/** result of filtering */
 	protected List<Transaction> filteredTransactions = null;
 
@@ -47,7 +50,7 @@ public class ChartPanelCreator extends JPanel {
 
 	public ChartPanelCreator(IChart chart) {
 		this.chart = chart;
-		
+
 		setLayout(new GridBagLayout());
 	}
 
@@ -61,6 +64,8 @@ public class ChartPanelCreator extends JPanel {
 	public void compute() throws Exception {
 
 		// selection and aggregation
+		
+		log.info("Compute chart panel");
 
 		filteredTransactions = CriteriaFilter.filter(
 				Core.getInstance().getTransactions(), chart.getCriteria());
@@ -72,23 +77,24 @@ public class ChartPanelCreator extends JPanel {
 			GlobalAggregator agg = (GlobalAggregator) chart.getAggregator();
 
 			AccountingTree tree = agg.getTree();
-			
+
 			if (chart.getRestriction() != null) {
 				tree = chart.getRestriction().computeRestriction(tree);
 			}
-			
+
 			Perf.getInstance().takeMeasure("start chart creation");
-			
+
 			trees.add(tree);
 			JFreeChart jfchart = chart.getChartCreator().createChart(tree, "");
-			add(new ChartPanel(jfchart), new GBC(0, 0, GBC.BOTH));
-			
+			ChartPanel chartPanel = new ChartPanel(jfchart);			
+			add(chartPanel, new GBC(0, 0, GBC.BOTH));
+
 			Perf.getInstance().takeMeasure("end chart creation");
 		}
 		else if (chart.getAggregator() instanceof KindAggregator) {
 
 			KindAggregator agg = (KindAggregator) chart.getAggregator();
-			
+
 			AccountingTree incomeTree = agg.getIncomeTree();
 			AccountingTree outcomeTree = agg.getOutcomeTree();
 
@@ -100,15 +106,15 @@ public class ChartPanelCreator extends JPanel {
 			}
 
 			Perf.getInstance().takeMeasure("start chart creation");
-			
+
 			trees.add(incomeTree);
 			JFreeChart incomeChart = chart.getChartCreator().createChart(incomeTree, I18n.getMessage("chart.legend.income"));
 			add(new ChartPanel(incomeChart), new GBC(0, 0, GBC.BOTH));
-			
+
 			trees.add(outcomeTree);
 			JFreeChart outcomeChart = chart.getChartCreator().createChart(outcomeTree, I18n.getMessage("chart.legend.outcome"));
 			add(new ChartPanel(outcomeChart), new GBC(1, 0, GBC.BOTH));
-			
+
 			Perf.getInstance().takeMeasure("end chart creation");
 		}
 	}
@@ -116,7 +122,7 @@ public class ChartPanelCreator extends JPanel {
 	/*
 	 * Getters/Setters
 	 */
-	
+
 	/** @return the filteredTransactions
 	 */
 	public List<Transaction> getFilteredTransactions() {

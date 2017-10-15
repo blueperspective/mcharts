@@ -47,7 +47,7 @@ public class TransactionsPane extends JPanel {
 	private void initComponents() {
 
 		scrolTransactions = new JScrollPane();
-		tabTransactions = new JXTable();
+		tabTransactions = new JXTable();		
 
 		scrolTransactions.setViewportView(tabTransactions);
 	}
@@ -58,7 +58,7 @@ public class TransactionsPane extends JPanel {
 
 		setLayout(new GridBagLayout());
 
-		add(scrolTransactions, new GBC(0, 2, GBC.BOTH).setGridWidth(GBC.REMAINDER));
+		add(scrolTransactions, new GBC(0, 2, GBC.BOTH).setGridWidth(GBC.REMAINDER));		
 	}
 
 	/*

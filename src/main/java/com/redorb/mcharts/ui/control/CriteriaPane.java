@@ -34,9 +34,7 @@ import com.redorb.mcharts.ui.dialogs.SetSelectDialog;
 import com.redorb.mcharts.ui.models.ListComboModel;
 import com.redorb.mcharts.ui.renderers.MapListRenderer;
 import com.redorb.mcharts.utils.Utils;
-
 import com.michaelbaranov.microba.calendar.DatePicker;
-
 import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.core.accounting.Account;
 import com.redorb.mcharts.core.accounting.Category;
@@ -93,17 +91,17 @@ public class CriteriaPane extends JPanel {
 	private JCheckBox chkName;
 	private JLabel lblName;
 	private JLabel lblNameObject;
-	private JComboBox<Class> cmbNameObject;
-	private JComboBox cmbName;
+	private JComboBox<String> cmbNameObject;
+	private JComboBox<? extends IAccountingObject> cmbName;
 	private JCheckBox chkInverseName;
 
-	private ComboBoxModel<Account> accountsModel;
+	private ComboBoxModel<? extends IAccountingObject> accountsModel;
 	private ComboBoxModel<Category> categoryModel;
 	private ComboBoxModel<Payee> payeeModel;
 
 	// set
 	private JCheckBox chkSet;
-	private JComboBox<Class<?>> cmbObjectSet;
+	private JComboBox<String> cmbObjectSet;
 	private JButton butSetSelect;
 	private SetSelectDialog setSelectFrame = null;
 	private JCheckBox chkInverseSet;
@@ -160,7 +158,7 @@ public class CriteriaPane extends JPanel {
 		cmbDatePreset.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == e.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					onDatePreset();
 				}
 			}
@@ -180,12 +178,12 @@ public class CriteriaPane extends JPanel {
 
 		lblNameObject = new JLabel(I18n.getMessage("criteriaPane.lblNameObject"));
 
-		cmbNameObject = new JComboBox<Class>();
-		DefaultComboBoxModel<Class> nameObjectModel = new DefaultComboBoxModel<Class>();
-		nameObjectModel.addElement(Account.class);
-		nameObjectModel.addElement(Category.class);
-		nameObjectModel.addElement(Payee.class);
-		cmbNameObject.setRenderer(new MapListRenderer<Class>(Ui.getMapAccountObjectNames()));
+		cmbNameObject = new JComboBox<>();
+		DefaultComboBoxModel<String> nameObjectModel = new DefaultComboBoxModel<>();
+		nameObjectModel.addElement(Account.class.getName());
+		nameObjectModel.addElement(Category.class.getName());
+		nameObjectModel.addElement(Payee.class.getName());
+		cmbNameObject.setRenderer(new MapListRenderer<String>(Ui.getMapAccountObjectNames()));
 		cmbNameObject.setModel(nameObjectModel);
 		cmbNameObject.addItemListener(new ItemListener() {
 			@Override
@@ -197,7 +195,7 @@ public class CriteriaPane extends JPanel {
 		});
 
 		lblName = new JLabel(I18n.getMessage("criteriaPane.lblName"));
-		cmbName = new JComboBox<Object>();
+		cmbName = new JComboBox<>();
 		cmbName.setEditable(true);
 
 		chkInverseName = new JCheckBox(I18n.getMessage("criteriaPane.chkInverse"));
@@ -216,46 +214,43 @@ public class CriteriaPane extends JPanel {
 
 		butSetSelect = new JButton(I18n.getMessage("criteriaPane.butSetSelect"));		
 
-		cmbObjectSet = new JComboBox<Class<?>>();
+		cmbObjectSet = new JComboBox<>();
 		chkInverseSet = new JCheckBox(I18n.getMessage("criteriaPane.chkInverse"));
 
-		DefaultComboBoxModel<Class<?>> setObjectModel =
-				new DefaultComboBoxModel<Class<?>>();
-		setObjectModel.addElement(Account.class);
-		setObjectModel.addElement(Category.class);
-		setObjectModel.addElement(Payee.class);
+		DefaultComboBoxModel<String> setObjectModel =
+				new DefaultComboBoxModel<>();
+				setObjectModel.addElement(Account.class.getName());
+				setObjectModel.addElement(Category.class.getName());
+				setObjectModel.addElement(Payee.class.getName());
 
-		cmbObjectSet.setRenderer(new MapListRenderer<Class>(Ui.getMapAccountObjectNames()));
-		cmbObjectSet.setModel(setObjectModel);
-		cmbObjectSet.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO check for a real change
-				setSelectFrame = null;
-			}
-		});
+				cmbObjectSet.setRenderer(new MapListRenderer<String>(Ui.getMapAccountObjectNames()));
+				cmbObjectSet.setModel(setObjectModel);
+				cmbObjectSet.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO check for a real change
+						setSelectFrame = null;
+					}
+				});
 
-		butSetSelect.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				selectSet(evt);
-			}
-		});
+				butSetSelect.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						selectSet();
+					}
+				});
 
-		onCheckDateCriteria();
-		onCheckNameCriteria();
-		onCheckSetCriteria();
+				onCheckDateCriteria();
+				onCheckNameCriteria();
+				onCheckSetCriteria();
 	}
 
 	private void initModels() {
 
-		accountsModel = new ListComboModel<Account>(
-				new ArrayList<Account>(Core.getInstance().getAccounts().values()));
+		accountsModel = new ListComboModel<Account>(Core.getInstance().getAccounts());
 
-		categoryModel = new ListComboModel<Category>(new ArrayList<Category>(
-				Core.getInstance().getCategories().values()));
+		categoryModel = new ListComboModel<Category>(Core.getInstance().getCategories());
 
-		payeeModel = new ListComboModel<Payee>(new ArrayList<Payee>(
-				Core.getInstance().getPayees().values()));		
+		payeeModel = new ListComboModel<Payee>(Core.getInstance().getPayees());
 
 	}
 
@@ -270,7 +265,7 @@ public class CriteriaPane extends JPanel {
 		setLayout(new GridBagLayout());
 
 		// period
-		
+
 		JPanel pnlDate = new JPanel();
 		pnlDate.setLayout(new GridBagLayout());
 
@@ -287,7 +282,7 @@ public class CriteriaPane extends JPanel {
 		pnlDate.add(chkInvertDate, new GBC(3, 2, GBC.WEST));
 
 		// name
-		
+
 		JPanel pnlName = new JPanel();
 		pnlName.setLayout(new GridBagLayout());
 
@@ -302,7 +297,7 @@ public class CriteriaPane extends JPanel {
 		pnlName.add(chkInverseName, new GBC(3, 1).setAnchor(GBC.WEST));
 
 		// set
-		
+
 		JPanel pnlSet = new JPanel();
 		pnlSet.setLayout(new GridBagLayout());
 
@@ -312,15 +307,15 @@ public class CriteriaPane extends JPanel {
 		pnlSet.add(butSetSelect, new GBC(2, 0).setAnchor(GBC.WEST));
 
 		pnlSet.add(chkInverseSet, new GBC(3, 0).setAnchor(GBC.WEST));
-		
+
 		// separator
 
 		add(pnlDate, new GBC(0, 0, GBC.HORIZONTAL));
 		add(jsepHoriz1, new GBC(0, 1, GBC.HORIZONTAL).setGridWidth(GBC.REMAINDER));
-		
+
 		add(pnlName, new GBC(0, 2, GBC.HORIZONTAL));
 		add(jsepHoriz2, new GBC(0, 3, GBC.HORIZONTAL).setGridWidth(GBC.REMAINDER));
-		
+
 		add(pnlSet, new GBC(0, 4, GBC.HORIZONTAL));
 		add(Box.createGlue(), new GBC(0, 5, GBC.VERTICAL));
 
@@ -421,20 +416,20 @@ public class CriteriaPane extends JPanel {
 
 	private void onChangeNameObject() {
 
-		Class<?> obj = (Class<?>) cmbNameObject.getSelectedItem();
-
-		if (Account.class.equals(obj)) {
+		String obj = (String) cmbNameObject.getSelectedItem();
+/*
+		if (Account.class.getName().equals(obj)) {
 			cmbName.setModel(accountsModel);
 		}
-		else if (Category.class.equals(obj)) {
-			cmbName.setModel(categoryModel);
+		else if (Category.class.getName().equals(obj)) {
+			cmbName.setModel((ComboBoxModel<? extends IAccountingObject>) categoryModel);
 		}
 		else if (Payee.class.equals(obj)) {
 			cmbName.setModel(payeeModel);
-		}
+		}*/
 	}
 
-	private void selectSet(ActionEvent evt) {
+	private void selectSet() {
 
 		Object o = cmbObjectSet.getModel().getSelectedItem();
 
@@ -553,11 +548,17 @@ public class CriteriaPane extends JPanel {
 
 			ICriteria criteria = null;
 
-			Object obj = cmbNameObject.getSelectedItem();
+			String obj = (String) cmbNameObject.getSelectedItem();
 
-			if (obj != null && obj instanceof Class<?>) {
-				criteria = new NameCriteria((Class<? extends IAccountingObject>) obj, 
-						cmbName.getSelectedItem().toString());
+			if (obj != null) {
+
+				Class<? extends IAccountingObject> clazz;
+				try {
+					clazz = (Class<? extends IAccountingObject>) Class.forName(obj);
+					criteria = new NameCriteria(clazz, cmbName.getSelectedItem().toString());
+				} catch (ClassNotFoundException e) {
+					log.error(e.getMessage(), e);
+				}
 			}
 			else {
 				log.error("cmbObject gave a non class object");

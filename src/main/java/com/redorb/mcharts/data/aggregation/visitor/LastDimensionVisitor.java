@@ -1,5 +1,6 @@
 package com.redorb.mcharts.data.aggregation.visitor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,16 +8,15 @@ import java.util.Map;
 
 import com.redorb.mcharts.data.aggregation.structure.AccountingLeaf;
 import com.redorb.mcharts.data.aggregation.structure.INode;
-import com.redorb.mcharts.utils.MutableFloat;
 
-public class LastDimensionVisitor implements IVisitor<MutableFloat> {
+public class LastDimensionVisitor implements IVisitor<BigDecimal> {
 
 	/*
 	 * Attributes
 	 */
 	
-	private Map<INode<MutableFloat>, List<AccountingLeaf>> mapNodeLeaves = 
-			new HashMap<INode<MutableFloat>, List<AccountingLeaf>>();
+	private Map<INode<BigDecimal>, List<AccountingLeaf>> mapNodeLeaves = 
+			new HashMap<INode<BigDecimal>, List<AccountingLeaf>>();
 	
 	private List<AccountingLeaf> workingList = new ArrayList<AccountingLeaf>();
 
@@ -29,14 +29,14 @@ public class LastDimensionVisitor implements IVisitor<MutableFloat> {
 	 */
 	
 	@Override
-	public void visit(INode<MutableFloat> node) {
+	public void visit(INode<BigDecimal> node) {
 		
 		if (node.isLeaf()) {
 			workingList.add((AccountingLeaf) node);
 		}
 		else {
 			
-			for (INode<MutableFloat> child : node.getChildren()) {
+			for (INode<BigDecimal> child : node.getChildren()) {
 				visit(child);
 			}
 			
@@ -54,7 +54,7 @@ public class LastDimensionVisitor implements IVisitor<MutableFloat> {
 	/**
 	 * @return the mapNodeLeaves
 	 */
-	public Map<INode<MutableFloat>, List<AccountingLeaf>> getMapNodeLeaves() {
+	public Map<INode<BigDecimal>, List<AccountingLeaf>> getMapNodeLeaves() {
 		return mapNodeLeaves;
 	}
 

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.redorb.mcharts.core.accounting.Transaction;
 import com.redorb.mcharts.data.TransactionComparator;
 import com.redorb.mcharts.data.criteria.structure.AndListCriteria;
@@ -18,9 +15,6 @@ import com.redorb.mcharts.perf.Perf;
  * Filter a collection of transactions using a criteria.
  */
 public class CriteriaFilter {
-
-	
-	private final static Logger log = LoggerFactory.getLogger(CriteriaFilter.class);
 	
 	/**
 	 * Filters transaction using a criteria.

@@ -9,5 +9,9 @@ public interface IAggregator {
 
 	void aggregate(List<Transaction> transactions);
 	
-	List<Dimension> getDimensions();
+	Dimension[] getDimensions();
+	
+	boolean getSkipInternalTransactions();
+	
+	void setSkipInternalTransactions(boolean value);
 }

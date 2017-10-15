@@ -90,7 +90,9 @@ public class BatchProcessing {
 
 		if (args.length > 0) {
 			BatchProcessing processing = new BatchProcessing();
-			processing.process(new File(args[0]), new File("/home/endymion/dev/main/mcharts/src/main/resources/charts.xml"));
+			processing.process(
+					new File(args[0]), 
+					new File("/home/endymion/dev/main/mcharts/src/main/resources/charts.xml"));
 		}
 	}
 }

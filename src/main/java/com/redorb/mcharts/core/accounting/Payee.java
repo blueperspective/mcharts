@@ -5,7 +5,7 @@ package com.redorb.mcharts.core.accounting;
  */
 public class Payee extends AbstractAccountingObject {
 		
-	public Payee(Long number, String name) {
-		super(number, name);
+	public Payee(String name) {
+		super(name);
 	}
 }

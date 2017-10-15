@@ -1,5 +1,7 @@
 package com.redorb.mcharts.ui.models;
 
+import java.math.BigDecimal;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -7,7 +9,6 @@ import javax.swing.tree.TreePath;
 import com.redorb.mcharts.data.aggregation.structure.AccountingNode;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 import com.redorb.mcharts.data.aggregation.structure.INode;
-import com.redorb.mcharts.utils.MutableFloat;
 
 /**
  * Tree model for showing an accounting tree.
@@ -73,7 +74,7 @@ public class AccountingTreeModel implements TreeModel {
 
 			for (int i = 0; i < parentNode.getChildren().size() && res == -1; i++) {
 
-				INode<MutableFloat> childNode = parentNode.getChild(i);
+				INode<BigDecimal> childNode = parentNode.getChild(i);
 
 				if (childNode.equals(child)) {
 					res = i;

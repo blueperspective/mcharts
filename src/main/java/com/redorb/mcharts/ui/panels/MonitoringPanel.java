@@ -1,15 +1,12 @@
-package com.redorb.mcharts.ui.monitoring;
+package com.redorb.mcharts.ui.panels;
 
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -17,8 +14,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +25,7 @@ import com.redorb.mcharts.data.aggregation.aggregator.IAggregator;
 import com.redorb.mcharts.data.aggregation.aggregator.KindAggregator;
 import com.redorb.mcharts.data.criteria.structure.ICriteria;
 import com.redorb.mcharts.data.criteria.structure.PeriodCriteria;
-import com.redorb.mcharts.ui.components.SlidebarPanel;
+import com.redorb.mcharts.ui.components.RingDateSelector;
 
 @SuppressWarnings("serial")
 public class MonitoringPanel extends JPanel {
@@ -40,9 +35,8 @@ public class MonitoringPanel extends JPanel {
 	 */
 
 	private final Logger log = LoggerFactory.getLogger(MonitoringPanel.class);
-
-	private SlidebarPanel<String> yearControl;
-	private SlidebarPanel<String> monthControl;
+	
+	private RingDateSelector dateSelector;
 
 	private JToggleButton butCategories;
 	private JToggleButton butPayees;
@@ -50,7 +44,7 @@ public class MonitoringPanel extends JPanel {
 	private JCheckBox chkSubcategories;
 
 	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+	
 	/*
 	 * Ctors
 	 */
@@ -60,21 +54,20 @@ public class MonitoringPanel extends JPanel {
 		initLayout();
 	}
 
-	
+	/**
+	 * Initializes the components.
+	 */
 	protected void initComponents() {
 
-		yearControl = new SlidebarPanel<>(5, 
-				Arrays.asList("2007,2008,2009,2010,2011,2012,2013,2014,2015,2016".split(",")));
-							
-		yearControl.setSelectedElement(new SimpleDateFormat("yyyy").format(new Date()));
+		dateSelector = new RingDateSelector();
 		
-		monthControl = new SlidebarPanel<>(7, 
-				Arrays.asList("Janvier,Fevrier,Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,Decembre".split(",")));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MONTH, -1);
+		dateSelector.setYear(cal.get(Calendar.YEAR));
+		dateSelector.setMonth(cal.get(Calendar.MONTH));
 
-		monthControl.setSelectedIndex(Integer.parseInt(new SimpleDateFormat("MM").format(new Date())) - 1);
-		
 		butCategories = new JToggleButton(I18n.getMessage("common.categories"), Utils.getIcon("/images/16x16/category.png"));
-
 		butPayees = new JToggleButton(I18n.getMessage("common.payees"), Utils.getIcon("/images/16x16/payee.png"));
 
 		ButtonGroup group = new ButtonGroup();
@@ -85,12 +78,14 @@ public class MonitoringPanel extends JPanel {
 		chkSubcategories = new JCheckBox(I18n.getMessage("MonitoringPanel.chkSubcategories"));
 	}
 
+	/**
+	 * Initializes the layout.
+	 */
 	protected void initLayout() {
 
 		setLayout(new GridBagLayout());
 
-		add(yearControl, new GBC(0, 0, GBC.HORIZONTAL));
-		add(monthControl, new GBC(0, 1, GBC.HORIZONTAL));
+		add(dateSelector, new GBC(0, 0, GBC.HORIZONTAL));
 
 		JPanel pnlButtons = new JPanel();
 		pnlButtons.setLayout(new GridBagLayout());
@@ -98,10 +93,10 @@ public class MonitoringPanel extends JPanel {
 		pnlButtons.add(butCategories, new GBC(1, 0, GBC.HORIZONTAL));
 		pnlButtons.add(butPayees, new GBC(2, 0, GBC.HORIZONTAL));
 		pnlButtons.add(Box.createHorizontalGlue(), new GBC(3, 0, GBC.HORIZONTAL));
-		
-		add(pnlButtons, new GBC(0, 2, GBC.HORIZONTAL));
-		
-		add(chkSubcategories, new GBC(0, 3));
+
+		add(pnlButtons, new GBC(0, 1, GBC.HORIZONTAL));
+
+		add(chkSubcategories, new GBC(0, 2));
 	}
 
 	/*
@@ -110,37 +105,41 @@ public class MonitoringPanel extends JPanel {
 
 	public void addChangeListener(ActionListener changeChartListener) {
 
-		yearControl.addActionListener(changeChartListener);
-		monthControl.addActionListener(changeChartListener);
+		dateSelector.addActionListener(changeChartListener);
+		butCategories.addActionListener(changeChartListener);
+		butPayees.addActionListener(changeChartListener);
 	}
 
+	/**
+	 * @return the criteria
+	 */
 	public ICriteria getCriteria() {
 
-		ICriteria dateCriteria = null;
+		ICriteria periodCriteria = null;
 
 		try {
 			
-			Date startDate = dateFormat.parse("01/" + monthControl.getSelectedIndex() + "/" + yearControl.getSelectedElement());
+			Date startDate = dateFormat.parse("01/" + dateSelector.getMonth() + "/" + dateSelector.getYear());
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(startDate);
 			calendar.add(Calendar.MONTH, 1);
 			Date endDate = calendar.getTime();
 
-			dateCriteria = new PeriodCriteria(startDate, endDate);
-			
+			periodCriteria = new PeriodCriteria(startDate, endDate);
+
 		} catch (ParseException e) {
 			log.error(e.getMessage(), e);
 		}
 
-		return dateCriteria;
+		return periodCriteria;
 	}
 
+	/**
+	 * @return an aggregator on one dimension
+	 */
 	public IAggregator getAggregator() {
 
-		List<Dimension> dimensions = new ArrayList<>();
-		dimensions.add(Dimension.CATEGORY);
-
-		return new KindAggregator(dimensions);
+		return new KindAggregator(butCategories.isSelected() ? Dimension.CATEGORY : Dimension.PAYEE);
 	}
 }

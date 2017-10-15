@@ -2,10 +2,13 @@ package com.redorb.mcharts.io.grisbi;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,47 +33,15 @@ public class GsbContentHandler6 implements ContentHandler {
 
 	private final Logger log = LoggerFactory.getLogger(GsbContentHandler.class);
 
-	// elements
-
-	public static final String XML_ELT_ACCOUNT = "Account";
-	public static final String XML_ELT_TRANSACTION = "Transaction";
-	public static final String XML_ELT_PAYEE = "Party";
-	public static final String XML_ELT_CATEGORY = "Category";
-	public static final String XML_ELT_SUB_CATEGORY = "Sub_category";
-
-	// generic attributes
-
-	public static final String XML_ATT_NUMBER = "Nb";
-	public static final String XML_ATT_NAME = "Na";
-
-	// account
-
-	public static final String XML_ATT_ACC_NUMBER = "Number";
-	public static final String XML_ATT_ACC_NAME = "Name";
-	public static final String XML_ATT_INITIAL_BALANCE = "Initial_balance";
-
-	// transaction
-
-	public static final String XML_ATT_ACCOUNT = "Ac";
-	public static final String XML_ATT_TRANSACTION_TYPE = "Pn";
-	public static final String XML_ATT_DATE = "Dt";
-	public static final String XML_ATT_PAYEE = "Pa";
-	public static final String XML_ATT_CATEGORY = "Ca";
-	public static final String XML_ATT_SUB_CATEGORY = "Sca";
-	public static final String XML_ATT_AMOUNT = "Am";
-	public static final String XML_CHEQUE_NUMBER = "Pc";
-
-	public static final String XML_ATT_KIND = "Kd";
-
-	public static final String XML_VAL_KIND_INCOME = "0";
-
-	// sub category
-
-	public static final String XML_ATT_PARENT_CATEGORY = "Nbc";
-
 	// date format
-	
+
 	private DateFormat gsbDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+	private Map<Long, Account> accounts = new HashMap<>();
+
+	private Map<Long, Payee> payees = new HashMap<>();
+
+	private Map<Long, Category> categories = new HashMap<>();
 
 	/*
 	 * Ctors
@@ -87,91 +58,99 @@ public class GsbContentHandler6 implements ContentHandler {
 			String name,
 			Attributes atts) throws SAXException {
 
-		if (XML_ELT_ACCOUNT.equals(localName)) {
-						
+		if (GsbConsts.XML_ELT_ACCOUNT.equals(localName)) {
+
+			Long number = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_ACC_NUMBER));
+
 			BigDecimal amount = new BigDecimal(
-					String.valueOf(Float.parseFloat(atts.getValue(XML_ATT_INITIAL_BALANCE)
+					String.valueOf(Float.parseFloat(atts.getValue(GsbConsts.XML_ATT_INITIAL_BALANCE)
 							.replace(',', '.')
 							.replace(" ", ""))));
 
-			Long number = Long.parseLong(atts.getValue(XML_ATT_ACC_NUMBER));
-
 			Account account = new Account(
-					number,
-					atts.getValue(XML_ATT_ACC_NAME),
+					atts.getValue(GsbConsts.XML_ATT_ACC_NAME),
 					amount);
 
-			Core.getInstance().addAccount(number, account);
-		}
-		else if (XML_ELT_CATEGORY.equals(localName)) {
+			accounts.put(number, account);
 
-			Long number = Long.parseLong(atts.getValue(XML_ATT_NUMBER));
+			Core.getInstance().addAccount(account);
+		}
+		else if (GsbConsts.XML_ELT_CATEGORY.equals(localName)) {
+
+			Long number = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_NUMBER));
 
 			Category.Kind kind = Category.Kind.OUTCOME;
 
-			if (XML_VAL_KIND_INCOME.equals(atts.getValue(XML_ATT_KIND))) {
+			if (GsbConsts.XML_VAL_KIND_INCOME.equals(atts.getValue(GsbConsts.XML_ATT_KIND))) {
 				kind = Category.Kind.INCOME;
 			}
 
 			Category category = new Category(
-					Long.parseLong(atts.getValue(XML_ATT_NUMBER)),
-					atts.getValue(XML_ATT_NAME),
+					atts.getValue(GsbConsts.XML_ATT_NAME),
 					kind);
 
-			Core.getInstance().addCategory(number, category);
+			categories.put(number, category);
+
+			Core.getInstance().addCategory(category);
 		}
-		else if (XML_ELT_SUB_CATEGORY.equals(localName)) {
+		else if (GsbConsts.XML_ELT_SUB_CATEGORY.equals(localName)) {
 
-			Long number = Long.parseLong(atts.getValue(XML_ATT_NUMBER));
-			Long parentNumber = Long.parseLong(atts.getValue(XML_ATT_PARENT_CATEGORY)); 
+			Long number = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_NUMBER));
+			Long parentNumber = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_PARENT_CATEGORY)); 
 
-			Category category = new Category(
-					number,
-					atts.getValue(XML_ATT_NAME));
+			Category category = new Category(atts.getValue(GsbConsts.XML_ATT_NAME));
 
-			Category parentCategory = Core.getInstance().getCategories().get(parentNumber);
-			parentCategory.addSubCategory(number, category);
+			Category parentCategory = categories.get(parentNumber);
+			parentCategory.addSubCategory(category);
 		}
-		else if (XML_ELT_PAYEE.equals(localName)) {
+		else if (GsbConsts.XML_ELT_PAYEE.equals(localName)) {
 
-			Long number = Long.parseLong(atts.getValue(XML_ATT_NUMBER));
+			Long number = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_NUMBER));
 
-			Payee payee = new Payee(
-					number,
-					atts.getValue(XML_ATT_NAME));
+			Payee payee = new Payee(atts.getValue(GsbConsts.XML_ATT_NAME));
 
-			Core.getInstance().addPayee(number, payee);
+			payees.put(number, payee);
+
+			Core.getInstance().addPayee(payee);
 		}
-		else if (XML_ELT_TRANSACTION.equals(localName)) {
+		else if (GsbConsts.XML_ELT_TRANSACTION.equals(localName)) {
 
-			Long number = Long.parseLong(atts.getValue(XML_ATT_NUMBER));
-			Long accountNumber = Long.parseLong(atts.getValue(XML_ATT_ACCOUNT));
+			long number = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_NUMBER));
+			long accountNumber = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_ACCOUNT));
+			long payeeNumber = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_PAYEE));
+			long categoryNumber = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_CATEGORY));
+			long subCategoryNumber =Long.parseLong(atts.getValue(GsbConsts.XML_ATT_SUB_CATEGORY));
+			long linkedTransaction = Long.parseLong(atts.getValue(GsbConsts.XML_ATT_LINKED_TRANSACTION));
+			
 			Date date = null;
 			try {
-				date = gsbDateFormat.parse(atts.getValue(XML_ATT_DATE));
+				date = gsbDateFormat.parse(atts.getValue(GsbConsts.XML_ATT_DATE));
 			}
 			catch (ParseException e) {
-				throw new SAXException();
+				throw new SAXException(MessageFormat.format("Incorrect date format {0} (accepted format: {1}", atts.getValue(GsbConsts.XML_ATT_DATE), gsbDateFormat.toString()));
 			}
 
-			Account account = Core.getInstance().getAccount(accountNumber);
-			
+			Account account = accounts.get(accountNumber);
+			Payee payee = payees.get(payeeNumber);
+			Category category = categories.get(categoryNumber);
+			Category subCategory = categories.get(subCategoryNumber);
+
 			BigDecimal amount = new BigDecimal(
-					String.valueOf(Float.parseFloat(atts.getValue(XML_ATT_AMOUNT)
+					String.valueOf(Float.parseFloat(atts.getValue(GsbConsts.XML_ATT_AMOUNT)
 							.replace(',', '.')
 							.replace(" ", ""))));
-			
+
 			Transaction transaction = new Transaction(
-					number,
-					Integer.parseInt(atts.getValue(XML_ATT_TRANSACTION_TYPE)),
-					accountNumber,
+					Integer.parseInt(atts.getValue(GsbConsts.XML_ATT_TRANSACTION_TYPE)),
+					account,
 					date,
 					amount,
-					Long.parseLong(atts.getValue(XML_ATT_PAYEE)),
-					Long.parseLong(atts.getValue(XML_ATT_CATEGORY)),
-					Long.parseLong(atts.getValue(XML_ATT_SUB_CATEGORY)));
-			
-			account.addTransaction(number, transaction);
+					payee,
+					category,
+					subCategory,
+					linkedTransaction);
+
+			account.addTransaction(transaction);
 		}
 		else {
 			log.debug("Element not used : " + localName);
@@ -184,15 +163,15 @@ public class GsbContentHandler6 implements ContentHandler {
 
 	@Override
 	public void endDocument() throws SAXException {
-		
-		for (Account a : Core.getInstance().getAccounts().values()) {
-		
-			Collections.sort(a.getTransactions(), new TransactionComparator(CompareBy.DATE));
-			
-			BigDecimal balance = a.getInitialBalance();
-			
-			for (Transaction t : a.getTransactions()) {
-				
+
+		for (Account account : Core.getInstance().getAccounts()) {
+
+			Collections.sort(account.getTransactions(), new TransactionComparator(CompareBy.DATE));
+
+			BigDecimal balance = account.getInitialBalance();
+
+			for (Transaction t : account.getTransactions()) {
+
 				balance = balance.add(t.getAmount());
 				t.setBalance(balance);				
 			}

@@ -101,8 +101,7 @@ public class GsbContentHandler implements ContentHandler {
 		}
 		else if (XML_ELT_VERSION_FICHIER.equals(localName)) {
 			if (lastContent != null && XML_VAL_VERSION_0_5_0.equals(lastContent.toString())) {
-				log.debug("lastcontent : " + lastContent);
-				contentHandler = new GsbContentHandler5();
+				throw new RuntimeException("Version not supported");
 			}
 		}
 	}

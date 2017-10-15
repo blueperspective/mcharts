@@ -16,15 +16,17 @@ public class GlobalAggregator implements IAggregator {
 	 */
 
 	/** list of dimensions of the aggregator */
-	private List<Dimension> dimensions = null;
+	private Dimension[] dimensions = null;
 
 	private AccountingTree tree = null;
+	
+	private boolean skipInternalTransactions = false;
 
 	/*
 	 * Ctors
 	 */
 	
-	public GlobalAggregator(List<Dimension> dimensions) {
+	public GlobalAggregator(Dimension... dimensions) {
 		this.dimensions = dimensions;
 		tree = new AccountingTree(dimensions);
 	}
@@ -40,6 +42,10 @@ public class GlobalAggregator implements IAggregator {
 
 		// for each transaction
 		for (Transaction transaction : transactions) {
+			
+			if (transaction.getLinkedTransaction() != 0 && skipInternalTransactions) {
+				continue;
+			}
 
 			// get the keys of the transactions: values of the dimensions
 
@@ -63,11 +69,21 @@ public class GlobalAggregator implements IAggregator {
 	 */
 	
 	@Override
-	public List<Dimension> getDimensions() {
+	public Dimension[] getDimensions() {
 		return dimensions;
 	}
 
 	public AccountingTree getTree() {
 		return tree;
+	}
+
+	@Override
+	public boolean getSkipInternalTransactions() {
+		return skipInternalTransactions;
+	}
+
+	@Override
+	public void setSkipInternalTransactions(boolean value) {
+		this.skipInternalTransactions = value;
 	}
 }

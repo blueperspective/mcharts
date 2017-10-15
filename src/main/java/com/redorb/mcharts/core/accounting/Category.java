@@ -1,7 +1,7 @@
 package com.redorb.mcharts.core.accounting;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a category (or sub category).
@@ -11,37 +11,37 @@ public class Category extends AbstractAccountingObject {
 	/*
 	 * Attributes
 	 */
-	
+
 	public enum Kind {
 		INCOME,
 		OUTCOME
 	}
-	
+
 	/** sub categories */
-	private Map<Long, Category> subCategories = null;
-	
+	private List<Category> subCategories = null;
+
 	private Kind kind = null;
-	
+
 	/*
 	 * Ctor
 	 */
-	
+
 	/**
 	 * Builds a category with a given number and name
 	 */
-	public Category(Long number, String name) {
-		super(number, name);
+	public Category(String name) {
+		super(name);
 	}
-	
-	public Category(Long number, String name, Kind kind) {
-		super(number, name);
+
+	public Category(String name, Kind kind) {
+		super(name);
 		this.kind = kind;
 	}
-	
+
 	/*
 	 * Operations
 	 */
-	
+
 	/**
 	 * Adds the sub category.
 	 * Constructs the subCategories object the first time used, in order
@@ -49,17 +49,17 @@ public class Category extends AbstractAccountingObject {
 	 * @param number the sub category number
 	 * @param category the sub category to add
 	 */
-	public void addSubCategory(Long number, Category category) {
-		
+	public void addSubCategory(Category category) {
+
 		if (subCategories == null) {
-			subCategories = new HashMap<Long, Category>();
+			subCategories = new ArrayList<>();
 		}
-		
+
 		category.kind = kind;
-		
-		subCategories.put(number, category);
+
+		subCategories.add(category);
 	}
-	
+
 	/*
 	 * Getters/Setters
 	 */
@@ -67,26 +67,10 @@ public class Category extends AbstractAccountingObject {
 	/**
 	 * @return the sub categories
 	 */
-	public Map<Long, Category> getSubCategories() {
+	public List<Category> getSubCategories() {
 		return subCategories;
 	}
-	
-	/**
-	 * Return a given sub category
-	 * @param number identifier of the category
-	 * @return the category or null
-	 */
-	public Category getSubCategory(Long number) {
-		
-		Category subCategory = null;
-		
-		if (subCategories != null) {
-			subCategory =  subCategories.get(number);
-		}
-		
-		return subCategory;
-	}
-	
+
 	/**
 	 * @return the kind
 	 */
@@ -96,19 +80,38 @@ public class Category extends AbstractAccountingObject {
 
 	@Override
 	public boolean equals(Object o) {
-		
-		boolean res = false;
-		
-		if (o != null && o instanceof Category) {
-			Category c = (Category) o;
-			res = (number.equals(c.number)) && (name.equals(c.name));
+
+		if (o == null) { return false; }
+
+		if (! (o instanceof Category)) { return false; }
+
+		Category c = (Category) o;
+
+		boolean res = name.equals(c.name);
+
+		if (res && subCategories != null) {
+
+			res = subCategories.size() == c.subCategories.size();
+
+			for (int i = 0; i < subCategories.size() && !res; i++) {
+				res &= subCategories.get(i).equals(c.subCategories.get(i));
+			}
 		}
-		
+
 		return res;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return number.intValue() + name.hashCode();
+
+		int hashCode = name.hashCode();
+
+		if (subCategories != null) {
+			for (int i = 0; i < subCategories.size(); i++) {
+				hashCode += subCategories.get(i).hashCode();
+			}
+		}
+
+		return hashCode;
 	}
 }

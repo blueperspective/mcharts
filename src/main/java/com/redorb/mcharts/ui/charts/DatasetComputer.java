@@ -23,8 +23,6 @@ import com.redorb.mcharts.core.accounting.IAccountingObject;
 import com.redorb.mcharts.data.aggregation.Dimension;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 import com.redorb.mcharts.data.aggregation.structure.INode;
-import com.redorb.mcharts.utils.MutableFloat;
-import com.redorb.mcharts.utils.TimePeriodType;
 
 public class DatasetComputer {
 
@@ -46,15 +44,15 @@ public class DatasetComputer {
 
 		// fills dataset
 
-		INode<MutableFloat> rootNode = tree.getRoot();
+		INode<BigDecimal> rootNode = tree.getRoot();
 		int count1 = rootNode.getChildren().size();
 
 		for (int d1 = 0; d1 < count1; d1++) {
 
-			INode<MutableFloat> n1 = rootNode.getChild(d1);
+			INode<BigDecimal> n1 = rootNode.getChild(d1);
 
 			IAccountingObject accountingObject = (IAccountingObject) n1.getContent();
-			BigDecimal amount = n1.getValue().get().abs();
+			BigDecimal amount = n1.getValue().abs();
 			
 			dataset.setValue(accountingObject.getName(), amount);
 		}
@@ -64,16 +62,16 @@ public class DatasetComputer {
 
 		// fills dataset
 
-		INode<MutableFloat> rootNode = tree.getRoot();
+		INode<BigDecimal> rootNode = tree.getRoot();
 
 		int count1 = rootNode.getChildren().size();
 
 		for (int d1 = 0; d1 < count1; d1++) {
 
-			INode<MutableFloat> n1 = rootNode.getChild(d1);
+			INode<BigDecimal> n1 = rootNode.getChild(d1);
 
 			IAccountingObject accountingObject = (IAccountingObject) n1.getContent();
-			BigDecimal amount = n1.getValue().get().abs();
+			BigDecimal amount = n1.getValue().abs();
 
 			dataset.addValue(
 					amount, 
@@ -86,16 +84,16 @@ public class DatasetComputer {
 
 		// fills dataset
 
-		INode<MutableFloat> rootNode = tree.getRoot();
+		INode<BigDecimal> rootNode = tree.getRoot();
 
 		int count1 = rootNode.getChildren().size();
 
 		for (int d1 = 0; d1 < count1; d1++) {
 
-			INode<MutableFloat> n1 = rootNode.getChild(d1);
+			INode<BigDecimal> n1 = rootNode.getChild(d1);
 
 			IAccountingObject accountingObject = (IAccountingObject) n1.getContent();
-			BigDecimal amount = n1.getValue().get().abs();
+			BigDecimal amount = n1.getValue().abs();
 
 			dataset.addValue(
 					amount, 
@@ -109,17 +107,9 @@ public class DatasetComputer {
 		// date format
 
 		DateFormat dateFormat = null;
+		Dimension dim1 = tree.getDimensions()[0];
 
-		Object dim1 = tree.getDimensions().get(0);
-
-		if (! (dim1 instanceof TimePeriodType)) {
-			log.error("1st dimension should be of type TimePeriodType");
-			return;
-		}
-
-		TimePeriodType timePeriodType = (TimePeriodType) dim1;
-
-		switch (timePeriodType) {			
+		switch (dim1) {			
 		case WEEK:
 			dateFormat = new SimpleDateFormat("w yy");
 			break;
@@ -136,27 +126,27 @@ public class DatasetComputer {
 			dateFormat = new SimpleDateFormat("yyyy");
 			break;
 		default:
-			break;
+			throw new RuntimeException("Wrong dimension");
 		}
 
 		// graph series
 
-		INode<MutableFloat> rootNode = tree.getRoot();
+		INode<BigDecimal> rootNode = tree.getRoot();
 		int count1 = rootNode.getChildren().size();
 
 		for (int d1 = 0; d1 < count1; d1++) {
 
-			INode<MutableFloat> n1 = rootNode.getChild(d1);
+			INode<BigDecimal> n1 = rootNode.getChild(d1);
 			Date period = (Date) n1.getContent();
 
 			int count2 = n1.getChildrenCount();
 
 			for (int d2 = 0; d2 < count2; d2++) {
 
-				INode<MutableFloat> n2 = n1.getChild(d2);
+				INode<BigDecimal> n2 = n1.getChild(d2);
 
 				IAccountingObject accountingObject = (IAccountingObject) n2.getContent();				
-				BigDecimal amount = n2.getValue().get().abs();
+				BigDecimal amount = n2.getValue().abs();
 
 				dataset.addValue(
 						amount, 
@@ -168,7 +158,7 @@ public class DatasetComputer {
 	
 	public static void compute2DDataset(AccountingTree tree, TimePeriodValuesCollection dataset) {
 
-		if (tree.getDimensions().size() != 2) {
+		if (tree.getDimensions().length != 2) {
 			throw new RuntimeException("Missing dimensions");
 		}
 		
@@ -178,7 +168,7 @@ public class DatasetComputer {
 
 		// fills the series with the aggregator
 
-		Dimension dim1 = tree.getDimensions().get(0);
+		Dimension dim1 = tree.getDimensions()[0];
 
 		if (Dimension.WEEK != dim1
 				&& Dimension.MONTH != dim1
@@ -190,13 +180,13 @@ public class DatasetComputer {
 
 		// browse the tree
 
-		INode<MutableFloat> rootNode = tree.getRoot();
+		INode<BigDecimal> rootNode = tree.getRoot();
 
 		int count1 = rootNode.getChildren().size();
 
 		for (int d1 = 0; d1 < count1; d1++) {
 
-			INode<MutableFloat> n1 = rootNode.getChild(d1);
+			INode<BigDecimal> n1 = rootNode.getChild(d1);
 
 			Date period = (Date) n1.getContent();
 
@@ -227,10 +217,10 @@ public class DatasetComputer {
 
 			for (int d2 = 0; d2 < count2; d2++) {
 
-				INode<MutableFloat> n2 = n1.getChild(d2);
+				INode<BigDecimal> n2 = n1.getChild(d2);
 
 				IAccountingObject accountingObject = (IAccountingObject) n2.getContent();
-				BigDecimal amount = n2.getValue().get().abs();
+				BigDecimal amount = n2.getValue().abs();
 
 				// current time serie
 				TimePeriodValues currentSerie = null;

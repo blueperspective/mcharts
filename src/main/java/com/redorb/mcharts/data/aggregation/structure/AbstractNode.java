@@ -43,7 +43,7 @@ public abstract class AbstractNode<T> implements INode<T> {
 		
 		if (o != null && o instanceof AbstractNode<?>) {
 			
-			AbstractNode<T> node = (AbstractNode<T>) o;
+			AbstractNode<?> node = (AbstractNode<?>) o;
 			res = content.equals(node.content);
 		}
 		

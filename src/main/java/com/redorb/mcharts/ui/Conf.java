@@ -56,7 +56,7 @@ public class Conf {
 
 	/** text indicating false boolean value */
 	private static final String VALUE_FALSE = "false";
-
+	
 	/*
 	 * recent
 	 */
@@ -72,6 +72,10 @@ public class Conf {
 	public static final String PROP_IGNORE_LIST = "ignoreList";
 
 	public static final String PROP_USE_IGNORE_LIST = "ignoreList.use";
+	
+	/*
+	 * General prefs
+	 */
 
 	public static final String PROP_SAVE_DIR = "saveDir";
 
@@ -87,6 +91,8 @@ public class Conf {
 
 	public static final String PROP_LAST_SAVE_DIR = "lastSaveDir";
 
+	public static final String PROP_SKIP_INTERNAL_TRANSACTIONS = "skipInternalTransactions";
+	
 	/*
 	 * i18n
 	 */
@@ -101,7 +107,9 @@ public class Conf {
 	public static final String COUNTRY_FR = "FR";
 
 	public static final String LANGUAGE_EN = "en";
-	public static final String COUNTRY_EN = "GB";	
+	public static final String COUNTRY_EN = "GB";
+	
+	public static final String LAST_ACCOUNT = "lastAccount";
 
 	/*
 	 * Attributes

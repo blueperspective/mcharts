@@ -23,9 +23,13 @@ public class Account extends AbstractAccountingObject {
 	/*
 	 * Ctors
 	 */
+	
+	public Account(final String name) {
+		super(name);
+	}
 
-	public Account(final Long number, final String name, final BigDecimal initialBalance) {
-		super(number, name);
+	public Account(final String name, final BigDecimal initialBalance) {
+		super(name);
 		this.initialBalance = initialBalance;
 	}
 
@@ -33,7 +37,7 @@ public class Account extends AbstractAccountingObject {
 	 * Operations
 	 */
 
-	public final void addTransaction(final Long number, final Transaction transaction) {
+	public final void addTransaction(final Transaction transaction) {
 
 		transactions.add(transaction);
 	}

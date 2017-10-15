@@ -3,8 +3,6 @@ package com.redorb.mcharts.ui.control;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,6 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.redorb.commons.ui.GBC;
 import com.redorb.commons.ui.I18n;
@@ -43,6 +44,8 @@ public class AggregatorPane extends JPanel {
 	/*
 	 * Attributes
 	 */
+	
+	private Logger log = LoggerFactory.getLogger(AggregatorPane.class);
 
 	private JLabel lblDimensions;
 	private JCheckBox chkSeparateInOut;
@@ -53,7 +56,8 @@ public class AggregatorPane extends JPanel {
 	private DefaultListModel<Dimension> aggregateObjectModel = new DefaultListModel<>();
 
 	private JCheckBox chkRestriction;
-	private JComboBox<Class> cmbRestriction;
+	private DefaultComboBoxModel<String> restrictionObjectModel;
+	private JComboBox<String> cmbRestriction;
 	private JLabel lblParameter;
 	private JTextField txtParameter;
 
@@ -74,17 +78,17 @@ public class AggregatorPane extends JPanel {
 
 
 		lblDimensions = new JLabel(I18n.getMessage("aggregatorPane.lblDimensions"));
-		
+
 		// dimensions
-		
+
 		lstDimensions = new JList<Dimension>();
 		scrolDimensions = new JScrollPane();
 		scrolDimensions.setViewportView(lstDimensions);
-		
+
 		chkSeparateInOut = new JCheckBox(I18n.getMessage("aggregatorPane.separateInOut"));
 
 		// aggregation panel
-		
+
 		aggregateObjectModel.addElement(Dimension.ACCOUNT);
 		aggregateObjectModel.addElement(Dimension.CATEGORY);
 		aggregateObjectModel.addElement(Dimension.SUB_CATEGORY);
@@ -94,13 +98,13 @@ public class AggregatorPane extends JPanel {
 		aggregateObjectModel.addElement(Dimension.TRIMESTER);
 		aggregateObjectModel.addElement(Dimension.SEMESTER);
 		aggregateObjectModel.addElement(Dimension.YEAR);
-		
+
 		ListCellRenderer<Dimension> renderer = new MapListRenderer<Dimension>(
 				Ui.getMapDimensionsNames(), Ui.getMapDimensionsIcons());
 		lstDimensions.setCellRenderer(renderer);
 		lstDimensions.setModel(aggregateObjectModel);
 
-		listPane = new ListPane(ListPane.Orientation.LEFT);
+		listPane = new ListPane<>(ListPane.Orientation.LEFT);
 		listPane.setRenderer(renderer);
 		listPane.addActionListener(new ActionListener() {
 			@Override
@@ -108,38 +112,38 @@ public class AggregatorPane extends JPanel {
 				onAddDimension(evt);
 			}
 		});
-		
+
 		// restriction
 
-		chkRestriction = new javax.swing.JCheckBox();
+		chkRestriction = new JCheckBox();
 		chkRestriction.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				onCheckRestriction();
 			}
 		});
-		
-		cmbRestriction = new JComboBox<Class>();
-		
-		DefaultComboBoxModel<Class> restrictionObjectModel = new DefaultComboBoxModel<Class>();
-		restrictionObjectModel.addElement(LocalNFirstRestriction.class);
-		restrictionObjectModel.addElement(GlobalNFirstRestriction.class);
 
-		cmbRestriction.setRenderer(new MapListRenderer<Class>(Ui.getMapRestrictionNames()));
+		cmbRestriction = new JComboBox<>();
+
+		restrictionObjectModel = new DefaultComboBoxModel<>();
+		restrictionObjectModel.addElement(LocalNFirstRestriction.class.getName());
+		restrictionObjectModel.addElement(GlobalNFirstRestriction.class.getName());
+
+		cmbRestriction.setRenderer(new MapListRenderer<String>(Ui.getMapRestrictionNames()));
 		cmbRestriction.setModel(restrictionObjectModel);
-		
+
 		lblParameter = new JLabel(I18n.getMessage("restrictionPane.jlblParameter"));
 		txtParameter = new JTextField();
-		
+
 		// default values
 
 		onCheckRestriction();
 	}
 
 	private void initLayout() {
-		
+
 		// aggregation
-		
+
 		JPanel pnlAggregation = new JPanel();
 		pnlAggregation.setLayout(new GridBagLayout());
 		pnlAggregation.setBorder(BorderFactory.createTitledBorder(I18n.getMessage("aggregatorPane.title")));
@@ -150,13 +154,13 @@ public class AggregatorPane extends JPanel {
 		pnlAggregation.add(listPane, new GBC(1, 1, GBC.BOTH));
 
 		// restriction
-		
+
 		// restriction check box
-		
+
 		JPanel pnlRestriction = new JPanel();
 		pnlRestriction.setLayout(new GridBagLayout());
 		pnlRestriction.setBorder(BorderFactory.createTitledBorder(I18n.getMessage("restrictionPane.title")));
-		
+
 		pnlRestriction.add(chkRestriction, new GBC(0, 0).setAnchor(GBC.WEST));
 
 		// restriction combo box
@@ -172,9 +176,9 @@ public class AggregatorPane extends JPanel {
 		.setAnchor(GBC.WEST));
 
 		// global
-		
+
 		setLayout(new GridBagLayout());
-		
+
 		add(pnlAggregation, new GBC(0, 1, GBC.BOTH));
 		add(pnlRestriction, new GBC(0, 2, GBC.BOTH));
 		add(Box.createGlue(), new GBC(0, 3, GBC.VERTICAL));
@@ -186,17 +190,17 @@ public class AggregatorPane extends JPanel {
 
 	public void onAddDimension(ActionEvent evt) {
 
-		if (evt.getSource() instanceof DefaultListModel) {
+		if (evt.getSource() instanceof DefaultListModel<?>) {
 
-			DefaultListModel<Object> model = (DefaultListModel<Object>) evt.getSource();
+			DefaultListModel<Dimension> model = (DefaultListModel<Dimension>) evt.getSource();
 
-			Object o = lstDimensions.getSelectedValue();
-			if (o != null) {
-				model.addElement(o);
+			Dimension d = lstDimensions.getSelectedValue();
+			if (d != null) {
+				model.addElement(d);
 			}
 		}
 	}
-	
+
 	private void onCheckRestriction() {
 
 		boolean enabled = chkRestriction.isSelected();
@@ -222,13 +226,13 @@ public class AggregatorPane extends JPanel {
 
 		chkSeparateInOut.setSelected(aggregator instanceof KindAggregator);
 
-		List<Dimension> dimensions = aggregator.getDimensions();
+		Dimension[] dimensions = aggregator.getDimensions();
 
 		for (Dimension dim : dimensions) {
 			listPane.getModel().addElement(dim);
 		}
 	}
-	
+
 	/**
 	 * Initializes the pane from an instanciated aggregator.
 	 * @param aggregator the aggregator
@@ -238,10 +242,10 @@ public class AggregatorPane extends JPanel {
 		if (restriction == null) {
 			return;
 		}
-		
+
 		chkRestriction.setEnabled(true);
 		txtParameter.setText(restriction.getValue());
-		
+
 		onCheckRestriction();
 	}
 
@@ -251,11 +255,11 @@ public class AggregatorPane extends JPanel {
 	 */
 	public IAggregator buildAggregator() {
 
-		List<Dimension> dimensions = new ArrayList<Dimension>();
+		Dimension[] dimensions = new Dimension[listPane.getModel().getSize()];
 
 		for (int i = 0; i < listPane.getModel().getSize(); i++) {
 			Dimension o = listPane.getModel().get(i);
-			dimensions.add(o);
+			dimensions[i] = o;
 		}
 
 		IAggregator aggregator = null;
@@ -279,7 +283,7 @@ public class AggregatorPane extends JPanel {
 			MessageTank.getInstance().error(I18n.getMessage("errors.noDimensions"));
 		}
 	}
-	
+
 	/**
 	 * Build a restriction using the form
 	 * @return
@@ -290,14 +294,24 @@ public class AggregatorPane extends JPanel {
 
 		if (chkRestriction.isSelected()) {
 
-			Object o = cmbRestriction.getModel().getSelectedItem();
+			String restrictionName = (String) restrictionObjectModel.getSelectedItem();			
 
-			if (o != null) {
+			if (restrictionName != null) {
 
-				String[] parameterNames = new String[] { RestrictionFactory.PARAM_RESTRICTION_N };
-				String[] parameterValues = new String[] { txtParameter.getText() };
+				Class<?> clazz;
+				try {
+					
+					clazz = Class.forName(restrictionName);
 
-				restriction = RestrictionFactory.newInstance((Class<?>) o, parameterNames, parameterValues);
+
+					String[] parameterNames = new String[] { RestrictionFactory.PARAM_RESTRICTION_N };
+					String[] parameterValues = new String[] { txtParameter.getText() };
+
+					restriction = RestrictionFactory.newInstance(clazz, parameterNames, parameterValues);
+					
+				} catch (ClassNotFoundException e) {
+					log.error(e.getMessage(), e);
+				}
 			}
 		}
 
@@ -313,13 +327,13 @@ public class AggregatorPane extends JPanel {
 			MessageTank.getInstance().error("errors.noRestrictionParameter");
 		}
 	}
-	
+
 	public void check() {
-		
+
 		checkAggregator();
 		checkRestriction();
 	}
-	
+
 	public int getDimensionCount() {
 		return listPane.getModel().getSize();
 	}

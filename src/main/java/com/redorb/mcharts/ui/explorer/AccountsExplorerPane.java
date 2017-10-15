@@ -99,22 +99,22 @@ public class AccountsExplorerPane extends JPanel {
 		// fills the combo box with accounts using ObjetLabelModel
 
 		DefaultComboBoxModel<Account> accountsModel = new DefaultComboBoxModel<>();
-		for (Account account : Core.getInstance().getAccounts().values()) {
+		for (Account account : Core.getInstance().getAccounts()) {
 			accountsModel.addElement(account);
 		}
 		
-		Map<Object, String> mapAccounts = new HashMap<>();
-		for (Account account : Core.getInstance().getAccounts().values()) {
+		Map<Account, String> mapAccounts = new HashMap<>();
+		for (Account account : Core.getInstance().getAccounts()) {
 			mapAccounts.put(account, account.getName());
 		}
 		
-		cmbAccount.setRenderer(new MapListRenderer(mapAccounts));
+		cmbAccount.setRenderer(new MapListRenderer<Account>(mapAccounts));
 		cmbAccount.setModel(accountsModel);
 
 		cmbAccount.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				changeAccount(evt);
+				changeAccount();
 			}			
 		});
 
@@ -179,7 +179,7 @@ public class AccountsExplorerPane extends JPanel {
 	 * Called when the user changes the current account.
 	 * @param evt
 	 */
-	private void changeAccount(ActionEvent evt) {
+	private void changeAccount() {
 
 		Object o = cmbAccount.getModel().getSelectedItem();
 

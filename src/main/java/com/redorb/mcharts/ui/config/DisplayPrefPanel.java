@@ -28,5 +28,7 @@ public class DisplayPrefPanel extends GenericPrefPanel {
 		addPref(new Pref(Conf.PROP_SHOW_TRANSACTIONS, Pref.Type.BOOLEAN));
 		
 		addPref(new Pref(Conf.PROP_SHOW_TREES, Pref.Type.BOOLEAN));
+		
+		addPref(new Pref(Conf.PROP_SKIP_INTERNAL_TRANSACTIONS, Pref.Type.BOOLEAN));
 	}
 }

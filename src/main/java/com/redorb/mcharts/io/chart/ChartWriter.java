@@ -191,13 +191,13 @@ public class ChartWriter implements IWriter {
 
 		// write dimensions
 
-		for (int i = 0; i < aggregator.getDimensions().size(); i++) {
+		for (int i = 0; i < aggregator.getDimensions().length; i++) {
 
 			Element eltParam = doc.createElement(XmlConstants.XML_ELT_PARAMETER);
 
 			eltParam.setAttribute(XmlConstants.XML_ATT_NAME, "dimension");
 			eltParam.setAttribute(XmlConstants.XML_ATT_VALUE, 
-					aggregator.getDimensions().get(i).name());
+					aggregator.getDimensions()[i].name());
 
 			eltAggregator.appendChild(eltParam);
 		}

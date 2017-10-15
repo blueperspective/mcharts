@@ -3,7 +3,6 @@ package com.redorb.mcharts.ui.dialogs;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.Box;
@@ -16,12 +15,12 @@ import javax.swing.JScrollPane;
 import com.redorb.commons.ui.CenteredDialog;
 import com.redorb.commons.ui.CommonProperties;
 import com.redorb.commons.ui.GBC;
-import com.redorb.commons.ui.Utils;
 import com.redorb.commons.ui.I18n;
-import com.redorb.mcharts.ui.models.AccountingObjectListModel;
-import com.redorb.mcharts.ui.renderers.AlternateRowsListRenderer;
+import com.redorb.commons.ui.Utils;
 import com.redorb.mcharts.core.accounting.AbstractAccountingObject;
 import com.redorb.mcharts.core.accounting.IAccountingObject;
+import com.redorb.mcharts.ui.models.AccountingObjectListModel;
+import com.redorb.mcharts.ui.renderers.AlternateRowsListRenderer;
 
 /**
  * Allow to select a set of elements.
@@ -125,7 +124,7 @@ public class SetSelectDialog extends CenteredDialog {
 				"/images/22x22/select.png", "", "", 
 				new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						select(evt);
+						select();
 					}
 				});
 
@@ -133,7 +132,7 @@ public class SetSelectDialog extends CenteredDialog {
 				"/images/22x22/unselect.png", "", "", 
 				new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						unselect(evt);
+						unselect();
 					}
 				});
 
@@ -141,7 +140,7 @@ public class SetSelectDialog extends CenteredDialog {
 				"/images/22x22/selectAll.png", "", "", 
 				new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						selectAll(evt);
+						selectAll();
 					}
 				});
 
@@ -149,7 +148,7 @@ public class SetSelectDialog extends CenteredDialog {
 				"/images/22x22/unselectAll.png", "", "", 
 				new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						unselectAll(evt);
+						unselectAll();
 					}
 				});
 	}
@@ -198,7 +197,7 @@ public class SetSelectDialog extends CenteredDialog {
 		setVisible(false);
 	}	
 
-	private void select(ActionEvent evt) {
+	private void select() {
 
 		List<IAccountingObject> objects = jlstAvailables.getSelectedValuesList();
 
@@ -208,7 +207,7 @@ public class SetSelectDialog extends CenteredDialog {
 		}
 	}
 
-	private void unselect(ActionEvent evt) {
+	private void unselect() {
 
 		List<IAccountingObject> objects = jlstSelected.getSelectedValuesList();
 
@@ -218,7 +217,7 @@ public class SetSelectDialog extends CenteredDialog {
 		}
 	}
 
-	private void selectAll(java.awt.event.ActionEvent evt) {
+	private void selectAll() {
 
 		Object[] objects = availablesModel.getObjects().toArray();
 
@@ -229,7 +228,7 @@ public class SetSelectDialog extends CenteredDialog {
 		}
 	}
 
-	private void unselectAll(java.awt.event.ActionEvent evt) {
+	private void unselectAll() {
 
 		Object[] objects = selectedModel.getObjects().toArray();
 

@@ -35,7 +35,7 @@ public class ValuedObject<O, V> implements Comparable<ValuedObject<O, V>> {
 				
 		if (o != null && o instanceof ValuedObject<?, ?>) {
 			
-			ValuedObject<O, V> valuedObject = (ValuedObject<O, V>) o;
+			ValuedObject<?, ?> valuedObject = (ValuedObject<?, ?>) o;
 			res = valuedObject.getObject().equals(valuedObject.getObject())
 				&& valuedObject.getValue().equals(value);
 		}
@@ -48,7 +48,7 @@ public class ValuedObject<O, V> implements Comparable<ValuedObject<O, V>> {
 
 	@Override
 	public int compareTo(ValuedObject<O, V> o) {
-				
+		
 		return value.compareTo((V) o.getValue());
 	}
 

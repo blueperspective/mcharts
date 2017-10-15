@@ -3,14 +3,13 @@ package com.redorb.mcharts.data.restriction;
 import java.io.Serializable;
 import java.util.Comparator;
 
+@SuppressWarnings("serial")
 public class ValuedObjectComparator implements Comparator<ValuedObject>, Serializable {
 
 	/*
 	 * Attribute
 	 */
-	
-	private static final long serialVersionUID = -9063701804599668647L;
-	
+		
 	private boolean ascending = true;
 	
 	/*

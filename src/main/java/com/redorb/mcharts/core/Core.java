@@ -4,9 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,26 +53,26 @@ public final class Core {
 	 */
 
 	/** list of accounts */
-	private final Map<Long, Account> accounts = new HashMap<Long, Account>();
+	private final List<Account> accounts = new ArrayList<>();
 
 	/** list of payees */
-	private final Map<Long, Payee> payees = new HashMap<Long, Payee>();
+	private final List<Payee> payees = new ArrayList<>();
 
 	/** list of categories */
-	private final Map<Long, Category> categories = new HashMap<Long, Category>();
+	private final List<Category> categories = new ArrayList<>();
 
 	/** common date format */
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
 	/** for transaction without categories */
-	private final static Category NULL_CATEGORY = new Category(Long.valueOf(-1), "Sans catégorie");
+	public final static Category NULL_CATEGORY = new Category("Sans catégorie");
 
 	/** for transaction without categories */
-	private final static Payee NULL_PAYEE = new Payee(Long.valueOf(-1), "Aucun tiers");
+	public final static Payee NULL_PAYEE = new Payee("Sans tiers");
 
-	private final static Category REMAINING_CATEGORY = new Category(Long.valueOf(-1), "Restant");
+	public final static Category REMAINING_CATEGORY = new Category("Restant");
 
-	private final static Payee REMAINING_PAYEE = new Payee(Long.valueOf(-1), "Restant");
+	public final static Payee REMAINING_PAYEE = new Payee("Restant");
 
 	/*
 	 * Ctor
@@ -84,16 +82,16 @@ public final class Core {
 	 * Operations
 	 */
 
-	public void addAccount(final Long number, final Account account) {
-		accounts.put(number, account);
+	public void addAccount(final Account account) {
+		accounts.add(account);
 	}
 
-	public void addCategory(final Long number, final Category category) {
-		categories.put(number, category);	
+	public void addCategory(final Category category) {
+		categories.add(category);	
 	}
 
-	public void addPayee(final Long number, final Payee payee) {
-		payees.put(number, payee);
+	public void addPayee(final Payee payee) {
+		payees.add( payee);
 	}
 
 	/*
@@ -121,7 +119,7 @@ public final class Core {
 
 		List<Transaction> res = new ArrayList<Transaction>();
 
-		for (Account account : accounts.values()) {
+		for (Account account : accounts) {
 			res.addAll(account.getTransactions());
 		}
 		
@@ -130,15 +128,11 @@ public final class Core {
 		return res;
 	}
 
-	public Map<Long, Account> getAccounts() {
+	public List<Account> getAccounts() {
 		return accounts;
 	}
-
-	public Account getAccount(final Long number) {
-		return accounts.get(number);
-	}
-
-	public Map<Long, Payee> getPayees() {
+	
+	public List<Payee> getPayees() {
 		return payees;
 	}
 
@@ -146,28 +140,7 @@ public final class Core {
 		return DATE_FORMAT;
 	}
 
-	public Payee getPayee(final Long number) {
-
-		Payee payee = payees.get(number);
-
-		if (payee == null) {
-			payee = NULL_PAYEE;
-		}
-
-		return payee;
-	}
-
-	public Map<Long, Category> getCategories() {
+	public List<Category> getCategories() {
 		return categories;
-	}
-
-	public Category getCategory(Long number) {
-		Category category = categories.get(number);
-
-		if (category == null) {
-			category = NULL_CATEGORY;
-		}
-
-		return category;
 	}
 }

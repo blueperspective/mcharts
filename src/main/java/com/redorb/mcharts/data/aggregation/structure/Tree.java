@@ -1,8 +1,7 @@
 package com.redorb.mcharts.data.aggregation.structure;
 
+import java.math.BigDecimal;
 import java.util.List;
-
-import com.redorb.mcharts.utils.MutableFloat;
 
 public class Tree {
 
@@ -10,7 +9,7 @@ public class Tree {
 	 * Attributes
 	 */
 	
-	private INode<MutableFloat> root = new AccountingNode(Tree.class);
+	private INode<BigDecimal> root = new AccountingNode(Tree.class);
 
 	/*
 	 * Ctors
@@ -39,7 +38,7 @@ public class Tree {
 	 * @return
 	 */
 	private AccountingLeaf getLeafRecursive(
-			INode<MutableFloat> node,
+			INode<BigDecimal> node,
 			List<Object> keys, 
 			int depth) {
 		
@@ -51,7 +50,7 @@ public class Tree {
 		// search recursively for the node
 		for (int i = 0; i < node.getChildren().size() && !found; i++) {
 			
-			INode<MutableFloat> child = node.getChildren().get(i);
+			INode<BigDecimal> child = node.getChildren().get(i);
 						
 			if (child.getContent().equals(keys.get(depth))) {
 				found = true;
@@ -76,7 +75,7 @@ public class Tree {
 		// no amount, but depth < last index of keys, build a node recursively
 		else if (result == null && depth < (keys.size() - 1)) {
 			
-			INode<MutableFloat> child = new AccountingNode(keys.get(depth));
+			INode<BigDecimal> child = new AccountingNode(keys.get(depth));
 			node.addChild(child);
 			
 			result = getLeafRecursive(child, keys, depth + 1);
@@ -92,17 +91,18 @@ public class Tree {
 	/**
 	 * @return the root
 	 */
-	public INode<MutableFloat> getRoot() {
+	public INode<BigDecimal> getRoot() {
 		return root;
 	}
 
 	/**
 	 * @param root the root to set
 	 */
-	public void setRoot(INode<MutableFloat> root) {
+	public void setRoot(INode<BigDecimal> root) {
 		this.root = root;
 	}
 	
+	@Override
 	public String toString() {
 		return root.toString();
 	}

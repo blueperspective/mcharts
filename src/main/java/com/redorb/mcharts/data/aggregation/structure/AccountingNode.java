@@ -1,17 +1,13 @@
 package com.redorb.mcharts.data.aggregation.structure;
 
-import com.redorb.mcharts.utils.MutableFloat;
+import java.math.BigDecimal;
 
 /**
  * An AccountingNode is part of an AccountingTree.
  * The node represents an aggregated value, the leaf represents an aggregated
  * value + the amount value.
  */
-public class AccountingNode extends AbstractNode<MutableFloat> {
-
-	/*
-	 * Attributes
-	 */
+public class AccountingNode extends AbstractNode<BigDecimal> {
 
 	/*
 	 * Ctors
@@ -26,11 +22,11 @@ public class AccountingNode extends AbstractNode<MutableFloat> {
 	 */
 
 	@Override
-	public MutableFloat getValue() {
+	public BigDecimal getValue() {
 		
-		MutableFloat value = new MutableFloat();
+		BigDecimal value = new BigDecimal(0);
 		
-		for (INode<MutableFloat> child : children) {
+		for (INode<BigDecimal> child : children) {
 			value.add(child.getValue());
 		}
 		

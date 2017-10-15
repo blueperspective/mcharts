@@ -16,7 +16,7 @@ import com.redorb.commons.ui.Utils;
  * Launches the store and load for all config panes.
  */
 @SuppressWarnings("serial")
-public class ConfigPanel extends JPanel {
+public final class ConfigPanel extends JPanel {
 
 	/*
 	 * Attributes

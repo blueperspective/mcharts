@@ -45,7 +45,7 @@ public class SlidebarPanel<T> extends JPanel {
 
 		this.elementsToShow = pelementsToShow;
 		currentElement = (elementsToShow - 1) / 2;
-		
+
 		initComponents();
 		initLayout();
 	}
@@ -53,7 +53,7 @@ public class SlidebarPanel<T> extends JPanel {
 	public SlidebarPanel(int pelementsToShow, List<T> objects) {
 
 		this(pelementsToShow);
-		
+
 		this.objects = objects;		
 		render();
 	}
@@ -61,7 +61,7 @@ public class SlidebarPanel<T> extends JPanel {
 	/*
 	 * Operations
 	 */
-	
+
 	public void setObjets(List<T> objects) {
 		this.objects = objects;
 		render();
@@ -144,8 +144,11 @@ public class SlidebarPanel<T> extends JPanel {
 	}
 
 	public void setSelectedIndex(int index) {
-		currentElement = index;
-		render();
+
+		if (index < objects.size()) {
+			currentElement = index;
+			render();
+		}
 	}
 
 	public void setSelectedElement(T element) {

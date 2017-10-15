@@ -22,11 +22,10 @@ import com.redorb.mcharts.data.restriction.LocalNFirstRestriction;
 import com.redorb.mcharts.ui.charts.Bar3DChart;
 import com.redorb.mcharts.ui.charts.BarChart;
 import com.redorb.mcharts.ui.charts.LinesChart;
+import com.redorb.mcharts.ui.charts.MultiplePieCharts;
 import com.redorb.mcharts.ui.charts.Pie3DChart;
 import com.redorb.mcharts.ui.charts.PieChart;
 import com.redorb.mcharts.ui.charts.StackedAreasChart;
-import com.redorb.mcharts.ui.charts.MultiplePieCharts;
-import com.redorb.mcharts.utils.TimePeriodType;
 
 public class Ui {
 
@@ -48,67 +47,61 @@ public class Ui {
 	 * static methods
 	 */
 
-	private final static Map<Class, String> mapRestrictionName = 
+	private final static Map<String, String> mapRestrictionName = 
 			new HashMap<>();
 
 	private final static Map<Dimension, String> mapDimensionsName =
 			new HashMap<>();
-	
-	private final static Map<Class, String> mapAccountingObjectName =
-			new HashMap<>();
-	
-	private final static Map<Object, Icon> mapAccountingObjectIcon =
-			new HashMap<>();
 
-	private final static Map<Object, String> mapTimePeriodName = 
-			new HashMap<>();
-	
 	private final static Map<Dimension, Icon> mapDimensionIcon =
+			new HashMap<>();			
+	
+	private final static Map<String, String> mapAccountingObjectName =
 			new HashMap<>();
 	
-	private final static Map<Object, Icon> mapTimePeriodIcon = 
+	private final static Map<String, Icon> mapAccountingObjectIcon =
 			new HashMap<>();
 
-	private final static Map<Object, String> mapChartName = 
+	private final static Map<String, String> mapChartName = 
 			new HashMap<>();
 
-	public static Map<Object, String> getMapChartNames() {
+	public static Map<String, String> getMapChartNames() {
 
 		if (mapChartName.isEmpty()) {
 			mapChartName.put(
-					LinesChart.class, 
+					LinesChart.class.getName(), 
 					I18n.getMessage("common.linesChart"));
 			mapChartName.put(
-					PieChart.class, 
+					PieChart.class.getName(), 
 					I18n.getMessage("common.pieChart"));
 			mapChartName.put(
-					MultiplePieCharts.class, 
+					MultiplePieCharts.class.getName(), 
 					I18n.getMessage("common.multiplePieCharts"));
 			mapChartName.put(
-					BarChart.class, 
+					BarChart.class.getName(), 
 					I18n.getMessage("common.barChart"));
 			mapChartName.put(
-					Bar3DChart.class,
+					Bar3DChart.class.getName(),
 					I18n.getMessage("common.bar3DChart"));
 			mapChartName.put(
-					StackedAreasChart.class, 
+					StackedAreasChart.class.getName(), 
 					I18n.getMessage("common.stackedAreasChart"));
 			mapChartName.put(
-					Pie3DChart.class, 
+					Pie3DChart.class.getName(), 
 					I18n.getMessage("common.pie3DChart"));
 		}
 
 		return mapChartName;
 	}
 
-	public static Map<Class, String> getMapRestrictionNames() {
+	public static Map<String, String> getMapRestrictionNames() {
 
 		if (mapRestrictionName.isEmpty()) {
 			mapRestrictionName.put(
-					LocalNFirstRestriction.class,
+					LocalNFirstRestriction.class.getName(),
 					I18n.getMessage("common.localNFirstRestriction"));
 			mapRestrictionName.put(
-					GlobalNFirstRestriction.class, 
+					GlobalNFirstRestriction.class.getName(), 
 					I18n.getMessage("common.globalNFirstRestriction"));
 		}
 
@@ -150,19 +143,18 @@ public class Ui {
 		return mapDimensionsName;
 	}
 
-	public static Map<Class, String> getMapAccountObjectNames() {
+	public static Map<String, String> getMapAccountObjectNames() {
 
 		if (mapAccountingObjectName.isEmpty()) {
 			mapAccountingObjectName.put(
-					Account.class, 
+					Account.class.getName(), 
 					I18n.getMessage("common.account"));
 			mapAccountingObjectName.put(
-					Category.class, 
+					Category.class.getName(), 
 					I18n.getMessage("common.category"));
 			mapAccountingObjectName.put(
-					Payee.class, 
-					I18n.getMessage("common.payee"));
-			
+					Payee.class.getName(), 
+					I18n.getMessage("common.payee"));			
 		}
 
 		return mapAccountingObjectName;
@@ -203,67 +195,21 @@ public class Ui {
 		return mapDimensionIcon;
 	}
 	
-	public static Map<Object, Icon> getMapAccountObjectIcons() {
+	public static Map<String, Icon> getMapAccountObjectIcons() {
 
 		if (mapAccountingObjectIcon.isEmpty()) {
 			mapAccountingObjectIcon.put(
-					Account.class, 
+					Account.class.getName(), 
 					Utils.getIcon("/images/16x16/account.png"));
 			mapAccountingObjectIcon.put(
-					Category.class, 
+					Category.class.getName(), 
 					Utils.getIcon("/images/16x16/category.png"));
 			mapAccountingObjectIcon.put(
-					Payee.class, 
+					Payee.class.getName(), 
 					Utils.getIcon("/images/16x16/payee.png"));
 		}
 
 		return mapAccountingObjectIcon;
-	}
-
-	public static Map<Object, String> getMapTimePeriodNames() {
-
-		if (mapTimePeriodName.isEmpty()) {
-			mapTimePeriodName.put(
-					TimePeriodType.WEEK, 
-					I18n.getMessage("common.week"));
-			mapTimePeriodName.put(
-					TimePeriodType.MONTH, 
-					I18n.getMessage("common.month"));
-			mapTimePeriodName.put(
-					TimePeriodType.TRIMESTER, 
-					I18n.getMessage("common.trimester"));
-			mapTimePeriodName.put(
-					TimePeriodType.SEMESTER, 
-					I18n.getMessage("common.semester"));
-			mapTimePeriodName.put(
-					TimePeriodType.YEAR, 
-					I18n.getMessage("common.year"));
-		}
-
-		return mapTimePeriodName;
-	}
-	
-	public static Map<Object, Icon> getMapTimePeriodIcons() {
-
-		if (mapTimePeriodIcon.isEmpty()) {
-			mapTimePeriodIcon.put(
-					TimePeriodType.WEEK, 
-					Utils.getIcon("/images/16x16/timeperiodw.png"));
-			mapTimePeriodIcon.put(
-					TimePeriodType.MONTH, 
-					Utils.getIcon("/images/16x16/timeperiodm.png"));
-			mapTimePeriodIcon.put(
-					TimePeriodType.TRIMESTER, 
-					Utils.getIcon("/images/16x16/timeperiodt.png"));
-			mapTimePeriodIcon.put(
-					TimePeriodType.SEMESTER, 
-					Utils.getIcon("/images/16x16/timeperiods.png"));
-			mapTimePeriodIcon.put(
-					TimePeriodType.YEAR, 
-					Utils.getIcon("/images/16x16/timeperiody.png"));
-		}
-
-		return mapTimePeriodIcon;
 	}
 
 	private static RecentObjectsMenu<File> recentFiles =

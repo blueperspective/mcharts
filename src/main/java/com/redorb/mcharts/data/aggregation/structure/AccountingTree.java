@@ -1,7 +1,5 @@
 package com.redorb.mcharts.data.aggregation.structure;
 
-import java.util.List;
-
 import com.redorb.mcharts.data.aggregation.Dimension;
 
 /**
@@ -13,13 +11,13 @@ public class AccountingTree extends Tree {
 	 * Attributes
 	 */
 	
-	private List<Dimension> dimensions = null;
+	private Dimension[] dimensions = null;
 
 	/*
 	 * Ctors
 	 */
 	
-	public AccountingTree(List<Dimension> dimensions) {
+	public AccountingTree(Dimension... dimensions) {
 		this.dimensions = dimensions;
 	}
 
@@ -30,7 +28,7 @@ public class AccountingTree extends Tree {
 	/**
 	 * @return the dimensions
 	 */
-	public List<Dimension> getDimensions() {
+	public Dimension[] getDimensions() {
 		return dimensions;
 	}
 }

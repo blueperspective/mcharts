@@ -15,22 +15,23 @@ import com.redorb.mcharts.core.Core;
  */
 public class Transaction extends AbstractAccountingObject {
 
-	public static final int TRANSACTION_TYPE_DEDIT = 3;
+	public static final int TRANSACTION_TYPE_OUTCOME = 3;
 	
-	public static final int TRANSACTION_TYPE_CREDIT = 2;
+	public static final int TRANSACTION_TYPE_INCOME = 2;
 	
 	/*
 	 * Attributes
 	 */
 		
-	private int type = 0;	
-	private Long account = null;	
+	private int type = 0;
+	private Account account = null;
 	private Date date = null;	
 	private BigDecimal amount = null;
-	private Long payee = null;	
-	private Long category = null;	
-	private Long subCategory = null;
+	private Payee payee = null;
+	private Category category = null;
+	private Category subCategory = null;
 	private BigDecimal balance = null;
+	private long linkedTransaction = -1;
 	
 	/*
 	 * Ctor
@@ -41,7 +42,7 @@ public class Transaction extends AbstractAccountingObject {
 	 * @param date
 	 */
 	public Transaction(Date date) {
-		super(Long.valueOf(-1L), null);
+		super("");
 		this.date = date;
 	}
 	
@@ -57,15 +58,15 @@ public class Transaction extends AbstractAccountingObject {
 	 * @param subCategory
 	 */
 	public Transaction(
-			Long number,
 			int type,
-			Long account,
+			Account account,
 			Date date,
 			BigDecimal amount,
-			Long payee,
-			Long category,
-			Long subCategory) {
-		super(number, "");
+			Payee payee,
+			Category category,
+			Category subCategory,
+			long linkedTransaction) {
+		super("");
 		this.type = type;
 		this.account = account;
 		this.date = date;
@@ -73,6 +74,7 @@ public class Transaction extends AbstractAccountingObject {
 		this.payee = payee;
 		this.category = category;
 		this.subCategory = subCategory;
+		this.linkedTransaction = linkedTransaction;
 	}
 	
 	/*
@@ -92,24 +94,23 @@ public class Transaction extends AbstractAccountingObject {
 	}
 	
 	public Account getAccount() {
-		return Core.getInstance().getAccount(account);
+		return account;
 	}
 
 	public Payee getPayee() {
-		return Core.getInstance().getPayee(payee);
+		return payee;
 	}
 
 	public Category getCategory() {
-		return Core.getInstance().getCategory(category);
+		return category;
 	}
-
+	
 	public Category getSubCategory() {
-		
-		if (getCategory() != null) {
-			return getCategory().getSubCategory(subCategory);
-		}
-		
-		return null;
+		return subCategory;
+	}
+	
+	public long getLinkedTransaction() {
+		return linkedTransaction;
 	}
 		
 	/**
@@ -117,8 +118,8 @@ public class Transaction extends AbstractAccountingObject {
 	 */
 	public BigDecimal getBalance() {
 		return balance;
-	}
-
+	}	
+	
 	/**
 	 * @param balance the balance to set
 	 */

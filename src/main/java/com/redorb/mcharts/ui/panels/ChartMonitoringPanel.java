@@ -1,4 +1,4 @@
-package com.redorb.mcharts.ui.monitoring;
+package com.redorb.mcharts.ui.panels;
 
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -40,6 +40,9 @@ public class ChartMonitoringPanel extends JPanel {
 		initLayout();
 	}
 
+	/**
+	 * Initializes the components.
+	 */
 	protected void initComponents() {
 
 		monitoringPanel = new MonitoringPanel();
@@ -53,6 +56,9 @@ public class ChartMonitoringPanel extends JPanel {
 		});
 	}
 
+	/**
+	 * Initializes the layout.
+	 */
 	protected void initLayout() {
 		
 		setLayout(new GridBagLayout());

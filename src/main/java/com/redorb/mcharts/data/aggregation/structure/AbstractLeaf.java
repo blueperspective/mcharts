@@ -41,7 +41,7 @@ public class AbstractLeaf<T> implements INode<T> {
 		
 		if (o instanceof AbstractLeaf<?>) {
 			
-			AbstractLeaf<T> leaf = (AbstractLeaf<T>) o;
+			AbstractLeaf<?> leaf = (AbstractLeaf<?>) o;
 			res = value.equals(leaf.getValue());
 		}
 		

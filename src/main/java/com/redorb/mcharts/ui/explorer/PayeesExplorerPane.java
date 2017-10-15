@@ -2,7 +2,6 @@ package com.redorb.mcharts.ui.explorer;
 
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,9 +86,7 @@ public class PayeesExplorerPane extends JPanel {
 
 		// get all payees
 
-		Collection<Payee> payees = Core.getInstance().getPayees().values();
-
-		for (Payee p : payees) {
+		for (Payee p : Core.getInstance().getPayees()) {
 			payeesNames.add(p.getName());
 		}
 

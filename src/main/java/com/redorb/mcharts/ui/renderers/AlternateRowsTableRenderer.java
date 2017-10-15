@@ -3,10 +3,15 @@ package com.redorb.mcharts.ui.renderers;
 import java.awt.Color;
 import java.awt.Component;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+
+import com.redorb.mcharts.core.Core;
 
 /**
  * Renderer to display a table with an alternate color every even row.
@@ -26,6 +31,8 @@ public class AlternateRowsTableRenderer extends JLabel implements
 	
 	private final Color outcomeColor = Color.RED;
 	
+	private final NumberFormat formatter = new DecimalFormat("##,###.00");
+	
 	/*
 	 * Ctors
 	 */
@@ -42,10 +49,15 @@ public class AlternateRowsTableRenderer extends JLabel implements
 	public Component getTableCellRendererComponent(
 			JTable table, Object value,
             boolean isSelected, boolean hasFocus, int rowIndex, int vColIndex) {
-				
-		// foreground
+		
+		if (value == null) {
+			value = new String("");
+		}
 		
 		if (value instanceof BigDecimal) {
+			
+			// foreground	
+			
 			BigDecimal b = (BigDecimal) value;
 			if (b.signum() < 0) {
 				setForeground(outcomeColor);
@@ -53,9 +65,12 @@ public class AlternateRowsTableRenderer extends JLabel implements
 			else {
 				setForeground(incomeColor);
 			}
-			
-			setText(value.toString() + " €");
+						
+			setText(formatter.format(value));
 		}
+		else if (value instanceof Date) {
+        	setText(Core.getInstance().getDateFormat().format(value));
+        }
 		else {
 			setText(value.toString());
 		}

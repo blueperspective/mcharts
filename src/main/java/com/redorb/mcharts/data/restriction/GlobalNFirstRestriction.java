@@ -1,5 +1,6 @@
 package com.redorb.mcharts.data.restriction;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -9,13 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.core.accounting.IAccountingObject;
-
 import com.redorb.mcharts.data.aggregation.structure.AccountingLeaf;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 import com.redorb.mcharts.data.aggregation.structure.INode;
 import com.redorb.mcharts.data.aggregation.visitor.LeafVisitor;
 import com.redorb.mcharts.data.aggregation.visitor.NodeComparator;
-import com.redorb.mcharts.utils.MutableFloat;
 
 /**
  * This restriction restricts to the n first values of the last dimension.
@@ -31,7 +30,7 @@ public class GlobalNFirstRestriction implements IRestriction {
 
 	private int n = 1;
 
-	private List<INode<MutableFloat>> listObjects = null;
+	private List<INode<BigDecimal>> listObjects = null;
 
 	/*
 	 * Ctors
@@ -78,15 +77,15 @@ public class GlobalNFirstRestriction implements IRestriction {
 	 * restriction
 	 * @param node the current node
 	 */
-	private void recursiveDelete(INode<MutableFloat> node) {
+	private void recursiveDelete(INode<BigDecimal> node) {
 
-		Iterator<INode<MutableFloat>> it = node.getChildren().iterator();
+		Iterator<INode<BigDecimal>> it = node.getChildren().iterator();
 
 		AccountingLeaf remaining = null;
 
 		while (it.hasNext()) {
 
-			INode<MutableFloat> child = it.next();
+			INode<BigDecimal> child = it.next();
 
 			if (child.isLeaf()) {
 
@@ -99,7 +98,7 @@ public class GlobalNFirstRestriction implements IRestriction {
 								Core.getInstance().getRemaining((Class<? extends IAccountingObject>) child.getContent().getClass()));
 					}
 
-					remaining.add(child.getValue().get());
+					remaining.add(child.getValue());
 
 					it.remove();
 				}

@@ -7,10 +7,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.redorb.mcharts.utils.TimePeriodType;
 import com.redorb.mcharts.core.accounting.Account;
 import com.redorb.mcharts.core.accounting.Category;
 import com.redorb.mcharts.core.accounting.Payee;
+import com.redorb.mcharts.data.aggregation.Dimension;
 
 /**
  * Creates an aggregator instance.
@@ -64,20 +64,20 @@ public final class AggregatorFactory {
 				else if (value.equals(Category.class.getSimpleName())) {
 					dimension = Category.class;
 				}
-				else if (value.equalsIgnoreCase(TimePeriodType.WEEK.name())) {
-					dimension = TimePeriodType.WEEK;
+				else if (value.equalsIgnoreCase(Dimension.WEEK.name())) {
+					dimension = Dimension.WEEK;
 				}
-				else if (value.equalsIgnoreCase(TimePeriodType.MONTH.name())) {
-					dimension = TimePeriodType.MONTH;
+				else if (value.equalsIgnoreCase(Dimension.MONTH.name())) {
+					dimension = Dimension.MONTH;
 				}
-				else if (value.equalsIgnoreCase(TimePeriodType.TRIMESTER.name())) {
-					dimension = TimePeriodType.TRIMESTER;
+				else if (value.equalsIgnoreCase(Dimension.TRIMESTER.name())) {
+					dimension = Dimension.TRIMESTER;
 				}
-				else if (value.equalsIgnoreCase(TimePeriodType.SEMESTER.name())) {
-					dimension = TimePeriodType.SEMESTER;
+				else if (value.equalsIgnoreCase(Dimension.SEMESTER.name())) {
+					dimension = Dimension.SEMESTER;
 				}
-				else if (value.equalsIgnoreCase(TimePeriodType.YEAR.name())) {
-					dimension = TimePeriodType.YEAR;
+				else if (value.equalsIgnoreCase(Dimension.YEAR.name())) {
+					dimension = Dimension.YEAR;
 				}
 				else {
 					log.error("Unknown dimension: " + value);
