@@ -1,12 +1,4 @@
+/target/
 
-# ignore doc folder
-
-.checkstyle
-.classpath
-.idea/
-doc/javadoc/
-test-output/
-target/
-reports/
-.settings/
-/bin/
+bin/
+*.bak

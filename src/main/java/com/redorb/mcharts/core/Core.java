@@ -1,6 +1,7 @@
 package com.redorb.mcharts.core;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,6 +141,10 @@ public final class Core {
 
 	public DateFormat getDateFormat() {
 		return DATE_FORMAT;
+	}
+	
+	public DecimalFormat getDecimalFormat() {
+		return DECIMAL_FORMAT;
 	}
 
 	public List<Category> getCategories() {

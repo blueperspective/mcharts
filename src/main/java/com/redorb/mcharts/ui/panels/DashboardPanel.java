@@ -36,7 +36,7 @@ import com.redorb.mcharts.ui.Conf;
 import com.redorb.mcharts.ui.charts.BalanceChart;
 import com.redorb.mcharts.ui.charts.IChartCreator;
 import com.redorb.mcharts.ui.charts.Pie3DChart;
-import com.redorb.mcharts.ui.components.SlidebarPanel;
+import com.redorb.mcharts.ui.components.RingSelectionPanel;
 import com.redorb.mcharts.ui.explorer.TransactionsPane;
 
 @SuppressWarnings("serial")
@@ -48,7 +48,7 @@ public class DashboardPanel extends JPanel {
 
 	private boolean isRendered = false;
 
-	private SlidebarPanel<Account> accountSelector;
+	private RingSelectionPanel<Account> accountSelector;
 
 	private JScrollPane pnlAmountChart;
 
@@ -79,7 +79,7 @@ public class DashboardPanel extends JPanel {
 
 	public void initComponents() {
 
-		accountSelector = new SlidebarPanel<>(5);
+		accountSelector = new RingSelectionPanel<>(5);
 		accountSelector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.redorb.commons.ui.GBC;
 import com.redorb.commons.ui.I18n;
-import com.redorb.mcharts.core.AccountingCore;
+import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.core.accounting.Transaction;
 import com.redorb.mcharts.data.aggregation.Dimension;
 import com.redorb.mcharts.data.aggregation.aggregator.GlobalAggregator;
@@ -158,7 +158,7 @@ public class MonthTransactionsPanel extends JPanel {
 	
 	public void render() {
 
-		List<Transaction> periodTransactions = CriteriaFilter.filter(AccountingCore.getInstance().getTransactions(), getCriteria());
+		List<Transaction> periodTransactions = CriteriaFilter.filter(Core.getInstance().getTransactions(), getCriteria());
 		
 		List<Transaction> incomeTransactions = CriteriaFilter.filter(periodTransactions, new KindCriteria(Transaction.TRANSACTION_TYPE_INCOME));
 		List<Transaction> outcomeTransactions = CriteriaFilter.filter(periodTransactions, new KindCriteria(Transaction.TRANSACTION_TYPE_OUTCOME));
@@ -169,13 +169,13 @@ public class MonthTransactionsPanel extends JPanel {
 		GlobalAggregator incomeAgg = new GlobalAggregator((Dimension[])null);
 		incomeAgg.aggregate(incomeTransactions);
 		BigDecimal totalIncome = incomeAgg.getTree().getLeaf(null).getValue();		
-		lblTotalIncomeValue.setText(AccountingCore.getInstance().getDecimalFormat().format(totalIncome));
+		lblTotalIncomeValue.setText(Core.getInstance().getDecimalFormat().format(totalIncome));
 		
 		GlobalAggregator outcomeAgg = new GlobalAggregator((Dimension[])null);
 		outcomeAgg.aggregate(outcomeTransactions);
 		BigDecimal totalOutcome = outcomeAgg.getTree().getLeaf(null).getValue();		
-		lblTotalOutcomeValue.setText(AccountingCore.getInstance().getDecimalFormat().format(totalOutcome));
+		lblTotalOutcomeValue.setText(Core.getInstance().getDecimalFormat().format(totalOutcome));
 		
-		lblTotalValue.setText(AccountingCore.getInstance().getDecimalFormat().format(totalIncome.add(totalOutcome)));
+		lblTotalValue.setText(Core.getInstance().getDecimalFormat().format(totalIncome.add(totalOutcome)));
 	}
 }
