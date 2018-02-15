@@ -63,6 +63,8 @@ public final class Core {
 
 	/** common date format */
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	
+	private final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.00");
 
 	/** for transaction without categories */
 	public final static Category NULL_CATEGORY = new Category("Sans catégorie");
