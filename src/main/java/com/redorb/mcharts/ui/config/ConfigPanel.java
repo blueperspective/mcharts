@@ -27,7 +27,7 @@ public final class ConfigPanel extends JPanel {
 
 	/** main tabbed pane */
 	private JTabbedPane tabPane;
-	
+
 	private LanguagePane languagePane;
 
 	/** panel for bottom buttons (only OK) */
@@ -44,7 +44,7 @@ public final class ConfigPanel extends JPanel {
 
 		initComponents();
 		initLayout();
-		
+
 		if (! firstRun) {			
 			restoreProperties();
 		}		
@@ -72,7 +72,7 @@ public final class ConfigPanel extends JPanel {
 		// tabbed pane
 
 		if (! firstRun) {
-			
+
 			tabPane.addTab(
 					I18n.getMessage("displayPrefPane.title"),
 					new DisplayPrefPanel());
@@ -80,7 +80,7 @@ public final class ConfigPanel extends JPanel {
 			tabPane.addTab(
 					I18n.getMessage("ignoreListPane.title"),
 					new IgnoreListPane());
-			
+
 
 			tabPane.addTab(
 					I18n.getMessage("languagePane.title"),
@@ -98,7 +98,7 @@ public final class ConfigPanel extends JPanel {
 		setLayout(new GridBagLayout());
 
 		// tabbed pane
-		
+
 		if (! firstRun) {
 
 			add(tabPane, 
@@ -110,7 +110,7 @@ public final class ConfigPanel extends JPanel {
 					new GBC(0, 0, GBC.BOTH).
 					setGridWidth(GBC.REMAINDER));
 		}
-		
+
 		add(Box.createGlue(), new GBC(0, 1, GBC.HORIZONTAL));
 
 		// add the buttons panel
@@ -146,25 +146,23 @@ public final class ConfigPanel extends JPanel {
 			languagePane.saveProperties();
 		}
 		else {
-		for (int i = 0; i < tabPane.getTabCount(); i++) {
+			for (int i = 0; i < tabPane.getTabCount(); i++) {
 
-			if (tabPane.getComponentAt(i) instanceof IConfigPane) {
+				if (tabPane.getComponentAt(i) instanceof IConfigPane) {
 
-				IConfigPane configPane = (IConfigPane) tabPane.getComponentAt(i);
-				configPane.saveProperties();
+					IConfigPane configPane = (IConfigPane) tabPane.getComponentAt(i);
+					configPane.saveProperties();
+				}
 			}
 		}
-		}
 	}
-	
+
 	/**
 	 * Ok event.
 	 */
 	public void ok() {
 
 		saveProperties();
-
-		setVisible(false);
 	}
 
 	/**
@@ -173,7 +171,5 @@ public final class ConfigPanel extends JPanel {
 	public void cancel() {
 
 		restoreProperties();
-
-		setVisible(false);
 	}
 }

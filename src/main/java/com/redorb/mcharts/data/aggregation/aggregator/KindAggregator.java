@@ -12,6 +12,7 @@ import com.redorb.mcharts.data.aggregation.Dimension;
 import com.redorb.mcharts.data.aggregation.structure.AccountingLeaf;
 import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 import com.redorb.mcharts.perf.Perf;
+import com.redorb.mcharts.ui.Conf;
 import com.redorb.mcharts.ui.charts.ChartPanelCreator;
 
 /**
@@ -34,7 +35,7 @@ public class KindAggregator implements IAggregator {
 	
 	private final Logger log = LoggerFactory.getLogger(ChartPanelCreator.class);
 	
-	private boolean skipInternalTransactions = true;
+	private boolean skipInternalTransactions = Conf.getProps().getBoolean(Conf.PROP_SKIP_INTERNAL_TRANSACTIONS, false);
 	
 	/*
 	 * Ctors

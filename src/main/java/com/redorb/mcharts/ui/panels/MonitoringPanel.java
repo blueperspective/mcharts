@@ -60,12 +60,6 @@ public class MonitoringPanel extends JPanel {
 	protected void initComponents() {
 
 		dateSelector = new RingDateSelector();
-		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		cal.add(Calendar.MONTH, -1);
-		dateSelector.setYear(cal.get(Calendar.YEAR));
-		dateSelector.setMonth(cal.get(Calendar.MONTH));
 
 		butCategories = new JToggleButton(I18n.getMessage("common.categories"), Utils.getIcon("/images/16x16/category.png"));
 		butPayees = new JToggleButton(I18n.getMessage("common.payees"), Utils.getIcon("/images/16x16/payee.png"));

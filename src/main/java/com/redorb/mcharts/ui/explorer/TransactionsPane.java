@@ -75,7 +75,7 @@ public class TransactionsPane extends JPanel {
 			col.setCellRenderer(new AlternateRowsTableRenderer());
 		}
 
-		// scrolls down the last elements
+		// scrolls down to last elements
 		tabTransactions.changeSelection(
 				tabTransactions.getModel().getRowCount() - 1,
 				0, true, true);

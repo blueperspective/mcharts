@@ -5,33 +5,35 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.slf4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
-public class RingSelectionPanel<T> extends JPanel {
+public class RingSelectionPanel<T> extends JPanel implements MouseWheelListener {
 
 	/*
 	 * Attributes
 	 */
 
-	public static final int MAX_FONT_SIZE = 24 - 8;
-	public static final int MIN_FONT_SIZE = 12;
+	public static final float MAX_FONT_SIZE = 16.0f;
+	public static final float MIN_FONT_SIZE = 12.0f;
 
 	public static final String CMD_BACKWARD = "backward";
 	public static final String CMD_BACKWARD_LOOP = "backwardLoop";
 	public static final String CMD_FORWARD = "forward";
 	public static final String CMD_FORWARD_LOOP = "forwardLoop";
 
-	private final Logger log = LoggerFactory.getLogger(RingSelectionPanel.class);
+	private int elementsToShow = 5;
 
-	private int elementsToShow;
 	private final List<JLabel> labels = new ArrayList<>();
 
 	private List<T> objects;
@@ -40,26 +42,41 @@ public class RingSelectionPanel<T> extends JPanel {
 
 	private final List<ActionListener> listeners = new ArrayList<>();
 
+	private boolean showBoundaries = true;
+
+	private boolean infiniteRing = true;
+
+	private final Log logger = LogFactory.getLog(RingSelectionPanel.class);
+
 	/*
 	 * Ctors
 	 */
 
 	public RingSelectionPanel(int pelementsToShow) {
+		this(pelementsToShow, true);		
+	}
 
-		if (pelementsToShow % 2 ==.0) { pelementsToShow++; }
+	public RingSelectionPanel(int pelementsToShow, boolean infiniteRing) {
+
+		if (pelementsToShow % 2 == 0) { pelementsToShow++; }
 
 		this.elementsToShow = pelementsToShow;
-		currentElement = (elementsToShow - 1) / 2;
+		this.infiniteRing = infiniteRing;
 
 		initComponents();
 		initLayout();
 	}
 
 	public RingSelectionPanel(int pelementsToShow, List<T> objects) {
+		this(pelementsToShow, objects, true);
+	}
 
-		this(pelementsToShow);
+	public RingSelectionPanel(int pelementsToShow, List<T> objects, boolean infiniteRing) {
 
-		this.objects = objects;		
+		this(pelementsToShow, infiniteRing);
+		this.objects = objects;
+
+		currentElement = (elementsToShow - 1) / 2;
 		render();
 	}
 
@@ -96,7 +113,7 @@ public class RingSelectionPanel<T> extends JPanel {
 			float factor = (distance == 0) ? 1 : (1 - (distance / middleElement));
 			float size = (MIN_FONT_SIZE + (factor * MAX_FONT_SIZE));
 
-			log.debug("distance " + distance + ", factor " + factor + ", size" + size);
+			System.out.println("element " + i + " d " + distance + " f " + factor + " s " + size);
 
 			JLabel label = new JLabel();
 			label.setFont(font.deriveFont(size));
@@ -118,6 +135,18 @@ public class RingSelectionPanel<T> extends JPanel {
 
 			labels.add(label);
 		}
+
+		if (!showBoundaries) {
+			labels.get(0).setText("...");			
+			labels.get(0).setForeground(Color.GRAY);
+			labels.get(0).setFont(font.deriveFont(MIN_FONT_SIZE + MAX_FONT_SIZE));
+
+			labels.get(elementsToShow - 1).setText("...");			
+			labels.get(elementsToShow - 1).setForeground(Color.GRAY);
+			labels.get(elementsToShow - 1).setFont(font.deriveFont(MIN_FONT_SIZE + MAX_FONT_SIZE));
+		}
+
+		addMouseWheelListener(this);
 	}
 
 	private void initLayout() {
@@ -130,6 +159,10 @@ public class RingSelectionPanel<T> extends JPanel {
 	}
 
 	public void move(int inc) {
+
+		if (!infiniteRing && (currentElement + inc < 0 || currentElement + inc >= objects.size())) {
+			return;
+		}
 
 		currentElement += inc;
 
@@ -161,31 +194,68 @@ public class RingSelectionPanel<T> extends JPanel {
 		render();
 	}
 
+	/**
+	 * @return the showBoundaries
+	 */
+	public boolean isShowBoundaries() {
+		return showBoundaries;
+	}
+
+	/**
+	 * @param showBoundaries the showBoundaries to set
+	 */
+	public void setShowBoundaries(boolean showBoundaries) {
+		this.showBoundaries = showBoundaries;
+	}
+
 	private void render() {
 
 		int firstObject = currentElement - ((elementsToShow - 1) / 2);
 
 		String text = "";
 
-		for (int i = 0; i < elementsToShow; i++)  {
+		int start = showBoundaries ? 0 : 1;
+		int end = showBoundaries ? elementsToShow : elementsToShow - 1;
+
+		System.out.println("render: current " + currentElement);
+
+		for (int i = start; i < end; i++)  {
 
 			try {
 				int val = firstObject + i;
 
-				if (0 <= val && val < objects.size()) {
-					text = objects.get(val).toString();
+				if (!infiniteRing && (val < 0 || val >= objects.size())) {
+					text = "";
 				}
 				else if (val < 0) {
-					text = objects.get(objects.size() + val).toString();
+					val = objects.size() + val;
 				}
-				else {
-					text = objects.get(val - objects.size()).toString();
+				else if (val >= objects.size()){
+					val = val - objects.size();
 				}
+
+				if (0 <= val && val < objects.size()) {				
+					text = objects.get(val).toString();
+				}
+
+				System.out.println("render " + i + ", v " + val + " : " + text);
+
 			} catch (Exception e) {
 				LoggerFactory.getLogger(RingSelectionPanel.class).error(e.getMessage(), e);
 			}
 
 			labels.get(i).setText(text);
+		}
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+
+		int notches = e.getWheelRotation();
+		if (notches < 0) {
+			move(-1);
+		} else {
+			move(1);
 		}
 	}
 }

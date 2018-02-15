@@ -75,7 +75,7 @@ public class LanguagePane extends JPanel implements IConfigPane {
 	public void saveProperties() {
 		
 		String language = Conf.LANGUAGE_FR;
-		String country = Conf.COUNTRY_FR;		
+		String country = Conf.COUNTRY_FR;
 		
 		if (butEnglish.isSelected()) {
 			language = Conf.LANGUAGE_EN;

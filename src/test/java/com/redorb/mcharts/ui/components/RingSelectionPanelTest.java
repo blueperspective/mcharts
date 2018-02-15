@@ -5,24 +5,37 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class RingSelectionPanelTest {
 
 	public void createFrame() {
 		
-		RingSelectionPanel<String> ringSelection = new RingSelectionPanel<>(7,
-				Arrays.asList("Janvier,Fevrier,Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,Decembre".split(",")));
+		/*RingSelectionPanel<String> ringSelection = new RingSelectionPanel<>(7,
+				Arrays.asList("Janvier,Fevrier,Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,Decembre".split(",")));*/
 		
-		ringSelection.addActionListener(new ActionListener() {
+		final RingSelectionPanel<String> ringSelectionYear = new RingSelectionPanel<>(7,
+				Arrays.asList("2015,2016,2017,2018".split(",")), false);
+				
+		ringSelectionYear.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(e.getActionCommand());
+			public void actionPerformed(ActionEvent e) {				
+				System.out.println("Selected index: " + ringSelectionYear.getSelectedIndex());
+				System.out.println("Selected elt: " + ringSelectionYear.getSelectedElement());				
 			}
 		});
 		
+		//System.out.println(ringSelection.getSelectedIndex());
+		
 		JFrame frame = new JFrame();
-		frame.setContentPane(ringSelection);
+		
+		JPanel pnl = new JPanel();
+		
+		//pnl.add(ringSelection);
+		pnl.add(ringSelectionYear);
+		
+		frame.setContentPane(pnl);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 300);
 		frame.setVisible(true);
@@ -39,20 +52,4 @@ public class RingSelectionPanelTest {
 			}
 		});
 	}
-
-	/*
-	 * Attributes
-	 */
-
-	/*
-	 * Ctors
-	 */
-
-	/*
-	 * Operations
-	 */
-
-	/*
-	 * Getters/Setters
-	 */
 }

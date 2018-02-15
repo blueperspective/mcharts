@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.redorb.commons.ui.I18n;
-import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.core.accounting.Transaction;
 import com.redorb.mcharts.data.TransactionComparator;
 
@@ -113,7 +112,7 @@ public class TransactionTableModel extends AbstractTableModel {
 				break;
 			case 4:
 				if (transactions.get(rowIndex).getAmount().signum() <= 0) {
-					res = transactions.get(rowIndex).getAmount().abs();
+					res = transactions.get(rowIndex).getAmount();
 				}				
 				break;
 			case 5:

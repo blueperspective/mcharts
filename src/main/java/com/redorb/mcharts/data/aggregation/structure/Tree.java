@@ -51,8 +51,11 @@ public class Tree {
 		for (int i = 0; i < node.getChildren().size() && !found; i++) {
 			
 			INode<BigDecimal> child = node.getChildren().get(i);
-						
-			if (child.getContent().equals(keys.get(depth))) {
+				
+			if (keys == null) {
+				result = (AccountingLeaf) child; 
+			}
+			else if (child.getContent().equals(keys.get(depth))) {
 				found = true;
 				
 				if (depth == (keys.size() - 1)) { // leaf : return amount
@@ -65,9 +68,9 @@ public class Tree {
 		}
 		
 		// no amount found, and depth == last index of keys, build the leaf
-		if (result == null && depth == (keys.size() - 1)) {
+		if (result == null && (keys == null || depth == (keys.size() - 1))) {
 			
-			AccountingLeaf child = new AccountingLeaf(keys.get(keys.size() - 1));
+			AccountingLeaf child = new AccountingLeaf(keys == null ? null : keys.get(keys.size() - 1));
 			node.addChild(child);
 			
 			result = child;

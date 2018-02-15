@@ -39,7 +39,8 @@ public class GlobalAggregatorTest {
 				new BigDecimal("100"),
 				p1,
 				c1,
-				null));
+				null,
+				0));
 
 		transactions.add(new Transaction(
 				0, 
@@ -48,7 +49,8 @@ public class GlobalAggregatorTest {
 				new BigDecimal("10"),
 				p1,				
 				c1,
-				null));
+				null,
+				0));
 
 		transactions.add(new Transaction( 
 				0, 
@@ -57,7 +59,8 @@ public class GlobalAggregatorTest {
 				new BigDecimal("50"),
 				p2,
 				c2,
-				null));
+				null,
+				0));
 
 		transactions.add(new Transaction(
 				0, 
@@ -66,7 +69,8 @@ public class GlobalAggregatorTest {
 				new BigDecimal("150"),
 				p2,
 				c2,
-				null));
+				null,
+				0));
 
 		agg.aggregate(transactions);
 

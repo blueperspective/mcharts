@@ -37,7 +37,8 @@ public class PeriodCriteriaTest {
 				new BigDecimal(100),
 				payee,
 				category,
-				null));
+				null,
+				0));
 		
 		cal.add(Calendar.MONTH, 3);
 		
@@ -48,7 +49,8 @@ public class PeriodCriteriaTest {
 				new BigDecimal(10),
 				payee,
 				category,
-				null));
+				null,
+				0));
 		
 		cal.add(Calendar.MONTH, 1);
 		
@@ -59,7 +61,8 @@ public class PeriodCriteriaTest {
 				new BigDecimal(50),
 				payee,
 				category,
-				null));
+				null,
+				0));
 		
 		cal.setTime(new Date());
 		cal.add(Calendar.MONTH, -1);

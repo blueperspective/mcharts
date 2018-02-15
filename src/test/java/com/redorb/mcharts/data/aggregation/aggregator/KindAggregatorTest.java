@@ -43,7 +43,8 @@ public class KindAggregatorTest {
 				new BigDecimal("100"),
 				p1,
 				c1,
-				null));
+				null,
+				0));
 				
 		transactions.add(new Transaction(
 				0, 
@@ -52,7 +53,8 @@ public class KindAggregatorTest {
 				new BigDecimal("10"),
 				p1,
 				c2,
-				null));
+				null,
+				0));
 		
 		transactions.add(new Transaction(
 				0, 
@@ -61,7 +63,8 @@ public class KindAggregatorTest {
 				new BigDecimal("70"),
 				p1,
 				c3,
-				null));
+				null,
+				0));
 		
 		/// 2nd payee
 		
@@ -72,7 +75,8 @@ public class KindAggregatorTest {
 				new BigDecimal("50"),
 				p2,
 				c2,
-				null));
+				null,
+				0));
 		
 		transactions.add(new Transaction(
 				0, 
@@ -81,7 +85,8 @@ public class KindAggregatorTest {
 				new BigDecimal("30"),
 				p2,
 				c3,
-				null));
+				null,
+				0));
 				
 		transactions.add(new Transaction(
 				0, 
@@ -90,7 +95,8 @@ public class KindAggregatorTest {
 				new BigDecimal("150"),
 				p2,
 				c2,
-				null));
+				null,
+				0));
 		
 		transactions.add(new Transaction(
 				0, 
@@ -99,9 +105,9 @@ public class KindAggregatorTest {
 				new BigDecimal("1200"),
 				p2,
 				c3,
-				null));
-		
-		
+				null,
+				0));
+				
 		agg.aggregate(transactions);
 		
 		AccountingTree itree = agg.getIncomeTree();

@@ -25,7 +25,7 @@ public class RingDateSelector extends JPanel {
 	
 	private ListenerList listeners = new ListenerList();
 	
-	private SlidebarPanel<Integer> yearSelector = new SlidebarPanel<>(5); 
+	private RingSelectionPanel<Integer> yearSelector = new RingSelectionPanel<>(5, false); 
 	
 	private RingSelectionPanel<String> monthSelector = new RingSelectionPanel<>(
 			5, Arrays.asList("Janvier,Fevrier,Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,Decembre".split(",")));
@@ -37,6 +37,12 @@ public class RingDateSelector extends JPanel {
 	public RingDateSelector() {
 		initComponents();
 		initLayout();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MONTH, -1);
+		setYear(cal.get(Calendar.YEAR));
+		setMonth(cal.get(Calendar.MONTH));
 	}
 	
 	private void initComponents() {
@@ -99,7 +105,7 @@ public class RingDateSelector extends JPanel {
 	
 	public int getMonth() {
 		
-		return monthSelector.getSelectedIndex();
+		return monthSelector.getSelectedIndex() + 1;
 	}
 	
 	public void setYear(int year) {
