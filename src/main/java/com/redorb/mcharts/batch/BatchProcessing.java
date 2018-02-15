@@ -16,7 +16,7 @@ import com.redorb.mcharts.data.aggregation.structure.AccountingTree;
 import com.redorb.mcharts.data.criteria.filter.CriteriaFilter;
 import com.redorb.mcharts.data.restriction.IRestriction;
 import com.redorb.mcharts.io.chart.ChartReader;
-import com.redorb.mcharts.io.grisbi.GsbReader;
+import com.redorb.mcharts.io.grisbi.GsbDomReader;
 
 public class BatchProcessing {
 	
@@ -34,7 +34,7 @@ public class BatchProcessing {
 
 		try {
 
-			GsbReader gsbReader = new GsbReader();
+			GsbDomReader gsbReader = new GsbDomReader();
 			gsbReader.read(file.getAbsolutePath());
 
 			ChartReader templateChartReader = 

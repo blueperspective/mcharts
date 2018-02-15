@@ -182,6 +182,7 @@ public class GsbDomReader {
 
 			Element eltTransaction = (Element) eltTransactions.item(p);
 
+			long number = Long.parseLong(eltTransaction.getAttribute(GsbConsts.XML_ATT_NUMBER));
 			long accountNumber = Long.parseLong(eltTransaction.getAttribute(GsbConsts.XML_ATT_ACCOUNT));
 			long payeeNumber = Long.parseLong(eltTransaction.getAttribute(GsbConsts.XML_ATT_PAYEE));
 			long categoryNumber = Long.parseLong(eltTransaction.getAttribute(GsbConsts.XML_ATT_CATEGORY));
@@ -222,6 +223,7 @@ public class GsbDomReader {
 							.replace(" ", ""))));
 
 			Transaction transaction = new Transaction(
+					number,
 					Integer.parseInt(eltTransaction.getAttribute(GsbConsts.XML_ATT_TRANSACTION_TYPE)),
 					account,
 					date,

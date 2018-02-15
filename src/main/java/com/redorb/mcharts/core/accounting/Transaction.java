@@ -23,6 +23,7 @@ public class Transaction extends AbstractAccountingObject {
 	 * Attributes
 	 */
 		
+	private long id = -1;
 	private int type = 0;
 	private Account account = null;
 	private Date date = null;	
@@ -58,6 +59,7 @@ public class Transaction extends AbstractAccountingObject {
 	 * @param subCategory
 	 */
 	public Transaction(
+			long id,
 			int type,
 			Account account,
 			Date date,
@@ -80,6 +82,10 @@ public class Transaction extends AbstractAccountingObject {
 	/*
 	 * Getters
 	 */
+	
+	public long getId() {
+		return id;
+	}
 	
 	public int getType() {
 		return type;
