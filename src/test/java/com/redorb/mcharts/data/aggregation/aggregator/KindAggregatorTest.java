@@ -37,6 +37,7 @@ public class KindAggregatorTest {
 		// 1st payee
 		
 		transactions.add(new Transaction(
+				0,
 				0, 
 				a, 
 				new Date(), 
@@ -47,6 +48,7 @@ public class KindAggregatorTest {
 				0));
 				
 		transactions.add(new Transaction(
+				1,
 				0, 
 				a, 
 				new Date(), 
@@ -57,6 +59,7 @@ public class KindAggregatorTest {
 				0));
 		
 		transactions.add(new Transaction(
+				2,
 				0, 
 				a, 
 				new Date(), 
@@ -69,6 +72,7 @@ public class KindAggregatorTest {
 		/// 2nd payee
 		
 		transactions.add(new Transaction(
+				3,
 				0, 
 				a, 
 				new Date(), 
@@ -79,6 +83,7 @@ public class KindAggregatorTest {
 				0));
 		
 		transactions.add(new Transaction(
+				4,
 				0, 
 				a, 
 				new Date(), 
@@ -89,6 +94,7 @@ public class KindAggregatorTest {
 				0));
 				
 		transactions.add(new Transaction(
+				5,
 				0, 
 				a, 
 				new Date(), 
@@ -99,6 +105,7 @@ public class KindAggregatorTest {
 				0));
 		
 		transactions.add(new Transaction(
+				6,
 				0, 
 				a, 
 				new Date(), 

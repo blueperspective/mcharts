@@ -33,6 +33,7 @@ public class GlobalAggregatorTest {
 		Payee p2 = new Payee("p2");
 		
 		transactions.add(new Transaction(
+				0,
 				0, 
 				a, 
 				new Date(), 
@@ -43,6 +44,7 @@ public class GlobalAggregatorTest {
 				0));
 
 		transactions.add(new Transaction(
+				1,
 				0, 
 				a, 
 				new Date(), 
@@ -53,6 +55,7 @@ public class GlobalAggregatorTest {
 				0));
 
 		transactions.add(new Transaction( 
+				2,
 				0, 
 				a, 
 				new Date(), 
@@ -63,6 +66,7 @@ public class GlobalAggregatorTest {
 				0));
 
 		transactions.add(new Transaction(
+				3,
 				0, 
 				a, 
 				new Date(), 

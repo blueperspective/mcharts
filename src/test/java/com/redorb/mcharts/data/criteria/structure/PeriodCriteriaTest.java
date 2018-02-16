@@ -31,6 +31,7 @@ public class PeriodCriteriaTest {
 		cal.add(Calendar.MONTH, -1);
 		
 		transactions.add(new Transaction(
+				0,
 				0, 
 				account, 
 				cal.getTime(), 
@@ -43,6 +44,7 @@ public class PeriodCriteriaTest {
 		cal.add(Calendar.MONTH, 3);
 		
 		transactions.add(new Transaction(
+				1,
 				0, 
 				account, 
 				cal.getTime(), 
@@ -55,6 +57,7 @@ public class PeriodCriteriaTest {
 		cal.add(Calendar.MONTH, 1);
 		
 		transactions.add(new Transaction(
+				2,
 				0, 
 				account, 
 				cal.getTime(), 
