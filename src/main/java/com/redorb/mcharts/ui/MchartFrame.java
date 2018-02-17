@@ -153,29 +153,37 @@ public final class MchartFrame extends JFrame {
 		});
 		
 		butHome = new JToggleButton(Utils.getIcon("/images/64x64/home.png"));
+		butHome.setToolTipText(I18n.getMessage("MchartFrame.butHome.tooltip"));
 		addMainButton(butHome, HomeView.HOME);
 
 		butExplorer = new JToggleButton(Utils.getIcon("/images/64x64/explorer.png"));
+		butExplorer.setToolTipText(I18n.getMessage("MchartFrame.butExplorer.tooltip"));
 		addMainButton(butExplorer, HomeView.EXPLORER);
 		
 		butMonthTransactions = new JToggleButton(Utils.getIcon("/images/64x64/charts.png"));
+		butMonthTransactions.setToolTipText(I18n.getMessage("MchartFrame.butMonthTransactions.tooltip"));
 		addMainButton(butMonthTransactions, HomeView.MONTH_TRANSACTIONS);
 
-		butCharts = new JToggleButton(Utils.getIcon("/images/64x64/charts.png"));
-		addMainButton(butCharts, HomeView.CHARTS);
-
 		butTableMonitor = new JToggleButton(Utils.getIcon("/images/64x64/tableFollower.png"));
+		butTableMonitor.setToolTipText(I18n.getMessage("MchartFrame.butTableMonitor.tooltip"));
 		addMainButton(butTableMonitor, HomeView.TABLE_MONITORING);
 
 		butChartMonitor = new JToggleButton(Utils.getIcon("/images/64x64/chartFollower.png"));		
+		butChartMonitor.setToolTipText(I18n.getMessage("MchartFrame.butChartMonitor.tooltip"));
 		addMainButton(butChartMonitor, HomeView.CHARTS_MONITORING);
 		
-		butChartMonitor2D = new JToggleButton(Utils.getIcon("/images/64x64/chartFollower.png"));		
+		butChartMonitor2D = new JToggleButton(Utils.getIcon("/images/64x64/chartFollower.png"));
+		butChartMonitor2D.setToolTipText(I18n.getMessage("MchartFrame.butChartMonitor2D.tooltip"));
 		addMainButton(butChartMonitor2D, HomeView.CHARTS_MONITORING_2D);
 		
-		butConfigure = new JToggleButton(Utils.getIcon("/images/64x64/configure.png"));
-		addMainButton(butConfigure, HomeView.CONFIG);
+		butCharts = new JToggleButton(Utils.getIcon("/images/64x64/charts.png"));
+		butCharts.setToolTipText(I18n.getMessage("MchartFrame.butCharts.tooltip"));
+		addMainButton(butCharts, HomeView.CHARTS);
 		
+		butConfigure = new JToggleButton(Utils.getIcon("/images/64x64/configure.png"));
+		butConfigure.setToolTipText(I18n.getMessage("MchartFrame.butConfigure.tooltip"));
+		addMainButton(butConfigure, HomeView.CONFIG);
+				
 		sidebarPanel.endLayout();
 		
 		// create panels
