@@ -53,8 +53,9 @@ public class GenericPrefPanel extends JPanel implements IConfigPane {
 			JComponent comp = p.getComponent();
 
 			// layout
-			add(label, new GBC(0, y).setAnchor(GBC.WEST));
-			add(comp, new GBC(1, y, GBC.HORIZONTAL));
+			add(label, new GBC(0, y).setAnchor(GBC.NORTHWEST));
+			GBC gbc = p.getGBC().setGridY(y);
+			add(comp, gbc);
 			
 			y++;
 		}

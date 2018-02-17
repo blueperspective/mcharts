@@ -4,8 +4,12 @@ import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.redorb.commons.ui.GBC;
 import com.redorb.commons.ui.I18n;
 import com.redorb.mcharts.ui.Conf;
 
@@ -18,7 +22,8 @@ public class Pref {
 	public enum Type {
 		STRING,
 		INT,
-		BOOLEAN
+		BOOLEAN,
+		LIST
 	}
 
 	public final static String SUFFIX_DESCRIPTION = ".description";
@@ -36,6 +41,7 @@ public class Pref {
 
 	private JComponent component;
 
+	private GBC gbc;
 
 	/*
 	 * Ctors
@@ -55,6 +61,8 @@ public class Pref {
 
 	public JComponent getComponent() {
 
+		gbc = new GBC(1, 0, GBC.HORIZONTAL);
+		
 		if (component == null) {
 
 			switch (type) {
@@ -64,6 +72,13 @@ public class Pref {
 				break;
 			case BOOLEAN:
 				component = new JCheckBox();
+				break;
+			case LIST:
+				JTextArea textArea = new JTextArea();
+				JScrollPane scrollPane = new JScrollPane(textArea);
+				component = scrollPane;
+				gbc = new GBC(1, 0, GBC.BOTH);								
+				break;
 			}
 		}
 
@@ -104,6 +119,10 @@ public class Pref {
 	public String getName() {
 		return name;
 	}
+	
+	public GBC getGBC() {
+		return gbc;
+	}
 
 	/**
 	 * @return the description
@@ -126,6 +145,9 @@ public class Pref {
 		case BOOLEAN:
 			value = Conf.getProps().getBoolean(id, false);
 			break;
+		case LIST:
+			value = Conf.getProps().getStringArray(id);
+			break;
 		}
 				
 		switch (type) {
@@ -135,6 +157,10 @@ public class Pref {
 			break;
 		case BOOLEAN:
 			((JCheckBox) component).setSelected((Boolean) value);
+			break;
+		case LIST:
+			JScrollPane scrollPane = (JScrollPane)component;
+			((JTextArea)scrollPane.getViewport().getView()).setText(String.join("\r\n", (String[])value));
 			break;
 		}
 	}
@@ -150,6 +176,10 @@ public class Pref {
 			break;
 		case BOOLEAN:
 			value = ((JCheckBox) component).isSelected();
+			break;
+		case LIST:
+			JScrollPane scrollPane = (JScrollPane)component;
+			value = ((JTextArea) (JTextArea)scrollPane.getViewport().getView()).getText().split("\r\n");
 		}
 		
 		Conf.getProps().setProperty(id, value);

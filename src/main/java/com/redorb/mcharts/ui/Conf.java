@@ -92,7 +92,7 @@ public class Conf {
 	public static final String PROP_LAST_SAVE_DIR = "lastSaveDir";
 
 	public static final String PROP_SKIP_INTERNAL_TRANSACTIONS = "skipInternalTransactions";
-	
+		
 	/*
 	 * i18n
 	 */
@@ -110,7 +110,13 @@ public class Conf {
 	public static final String COUNTRY_EN = "GB";
 	
 	public static final String LAST_ACCOUNT = "lastAccount";
-
+	
+	/*
+	 * Per file properties
+	 */
+	
+	public static final String PROP_HIDE_TRANSFERTS_LIST = "hideTransfertsList";
+	
 	/*
 	 * Attributes
 	 */

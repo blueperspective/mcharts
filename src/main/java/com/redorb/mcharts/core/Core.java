@@ -5,7 +5,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,10 +64,14 @@ public final class Core {
 	/** list of categories */
 	private final List<Category> categories = new ArrayList<>();
 
+	//FIXME: to preferences
+
 	/** common date format */
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-	
+
 	private final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.00");
+
+	//FIXME: to translate
 
 	/** for transaction without categories */
 	public final static Category NULL_CATEGORY = new Category("Sans catégorie");
@@ -76,6 +82,10 @@ public final class Core {
 	public final static Category REMAINING_CATEGORY = new Category("Restant");
 
 	public final static Payee REMAINING_PAYEE = new Payee("Restant");
+
+	private List<Transaction> allTransactions = null;
+
+	private Map<Long, Transaction> mapIdTransaction = null;
 
 	/*
 	 * Ctor
@@ -120,21 +130,43 @@ public final class Core {
 
 	public List<Transaction> getTransactions() {
 
-		List<Transaction> res = new ArrayList<Transaction>();
+		if (allTransactions == null) { 
 
-		for (Account account : accounts) {
-			res.addAll(account.getTransactions());
+			allTransactions = new ArrayList<>();
+
+			for (Account account : accounts) {
+				allTransactions.addAll(account.getTransactions());
+			}
+
+			Collections.sort(allTransactions, new TransactionComparator(CompareBy.DATE));
+		}
+
+		return allTransactions;
+	}
+	
+	public Map<Long, Transaction> getMapIdTransaction() {
+		
+		if (mapIdTransaction == null) {
+			
+			mapIdTransaction = new HashMap<>();
+			
+			for (Transaction t : getTransactions()) {
+				mapIdTransaction.put(t.getId(), t);
+			}
 		}
 		
-		Collections.sort(res, new TransactionComparator(CompareBy.DATE));
-
-		return res;
+		return mapIdTransaction;
+	}
+	
+	public Transaction getTransaction(long id) {
+		
+		return getMapIdTransaction().get(id);
 	}
 
 	public List<Account> getAccounts() {
 		return accounts;
 	}
-	
+
 	public List<Payee> getPayees() {
 		return payees;
 	}
@@ -142,7 +174,7 @@ public final class Core {
 	public DateFormat getDateFormat() {
 		return DATE_FORMAT;
 	}
-	
+
 	public DecimalFormat getDecimalFormat() {
 		return DECIMAL_FORMAT;
 	}
