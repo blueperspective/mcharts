@@ -182,4 +182,18 @@ public final class Core {
 	public List<Category> getCategories() {
 		return categories;
 	}
+
+	public List<Account> getAccountsByName(List<String> names) {
+		
+		List<Account> accountsByName = new ArrayList<>();
+		
+		for (Account account : accounts) {
+			log.debug("account name:" + account.getName() + " in " + String.join(",", names));
+			if (names.contains(account.getName())) {
+				accountsByName.add(account);
+			}
+		}
+		
+		return accountsByName;
+	}
 }

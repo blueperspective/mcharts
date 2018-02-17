@@ -146,7 +146,7 @@ public class Pref {
 			value = Conf.getProps().getBoolean(id, false);
 			break;
 		case LIST:
-			value = Conf.getProps().getStringArray(id);
+			value = Conf.getProps().getList(id);
 			break;
 		}
 				
@@ -160,7 +160,7 @@ public class Pref {
 			break;
 		case LIST:
 			JScrollPane scrollPane = (JScrollPane)component;
-			((JTextArea)scrollPane.getViewport().getView()).setText(String.join("\r\n", (String[])value));
+			((JTextArea)scrollPane.getViewport().getView()).setText(String.join("\n", (List)value));
 			break;
 		}
 	}
@@ -179,7 +179,7 @@ public class Pref {
 			break;
 		case LIST:
 			JScrollPane scrollPane = (JScrollPane)component;
-			value = ((JTextArea) (JTextArea)scrollPane.getViewport().getView()).getText().split("\r\n");
+			value = ((JTextArea) (JTextArea)scrollPane.getViewport().getView()).getText().split("\n");
 		}
 		
 		Conf.getProps().setProperty(id, value);

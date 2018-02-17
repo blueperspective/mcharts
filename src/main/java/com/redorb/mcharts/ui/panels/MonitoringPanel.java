@@ -20,11 +20,15 @@ import org.slf4j.LoggerFactory;
 import com.redorb.commons.ui.GBC;
 import com.redorb.commons.ui.I18n;
 import com.redorb.commons.ui.Utils;
+import com.redorb.mcharts.core.Core;
 import com.redorb.mcharts.data.aggregation.Dimension;
 import com.redorb.mcharts.data.aggregation.aggregator.IAggregator;
 import com.redorb.mcharts.data.aggregation.aggregator.KindAggregator;
+import com.redorb.mcharts.data.criteria.structure.AndBinaryCriteria;
 import com.redorb.mcharts.data.criteria.structure.ICriteria;
+import com.redorb.mcharts.data.criteria.structure.NotATransferBetweenCriteria;
 import com.redorb.mcharts.data.criteria.structure.PeriodCriteria;
+import com.redorb.mcharts.ui.Conf;
 import com.redorb.mcharts.ui.components.RingDateSelector;
 
 @SuppressWarnings("serial")
@@ -109,9 +113,11 @@ public class MonitoringPanel extends JPanel {
 	 */
 	public ICriteria getCriteria() {
 
-		ICriteria periodCriteria = null;
-
+		ICriteria criteria = null;
+				
 		try {
+			
+			// month criteria
 			
 			Date startDate = dateFormat.parse("01/" + dateSelector.getMonth() + "/" + dateSelector.getYear());
 
@@ -120,13 +126,23 @@ public class MonitoringPanel extends JPanel {
 			calendar.add(Calendar.MONTH, 1);
 			Date endDate = calendar.getTime();
 
-			periodCriteria = new PeriodCriteria(startDate, endDate);
+			ICriteria periodCriteria = new PeriodCriteria(startDate, endDate);
+			
+			// no transfert criteria
+			
+			ICriteria transfertCriteria = new NotATransferBetweenCriteria(
+					 Core.getInstance().getAccountsByName(
+							 Conf.getInstance().getProps().getList(Conf.PROP_HIDE_TRANSFERTS_LIST)));
+			
+			// combine
+			
+			criteria = new AndBinaryCriteria(periodCriteria, transfertCriteria);
 
 		} catch (ParseException e) {
 			log.error(e.getMessage(), e);
 		}
 
-		return periodCriteria;
+		return criteria;
 	}
 
 	/**

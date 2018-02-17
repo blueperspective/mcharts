@@ -168,8 +168,8 @@ public class DashboardPanel extends JPanel {
 	}
 
 	public void onPrevious() {
-		filterTransaction();
 		monthsOffset--;
+		filterTransaction();		
 		renderLastMonthOperations();
 		renderCategoryPayee();
 	}

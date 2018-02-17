@@ -1,5 +1,6 @@
 package com.redorb.mcharts.data.criteria.structure;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import com.redorb.mcharts.core.AccountingException;
@@ -34,12 +35,12 @@ public class NotATransferBetweenCriteria implements ICriteria {
 			return true;
 		}
 		
-		if (transaction.getLinkedTransaction() != -1) {
+		if (transaction.getLinkedTransaction() > 0) {
 			
 			Transaction linkedTransaction = Core.getInstance().getTransaction(transaction.getLinkedTransaction());
 			
 			if (linkedTransaction == null) {
-				throw new AccountingException("Linked transaction id {} could not be found in map");
+				throw new AccountingException(MessageFormat.format("Transaction {0} hash linked  transaction {1}, which could not be found in map", transaction.getId(), transaction.getLinkedTransaction()));
 			}
 			
 			return false;

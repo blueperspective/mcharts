@@ -69,6 +69,7 @@ public class Transaction extends AbstractAccountingObject {
 			Category subCategory,
 			long linkedTransaction) {
 		super("");
+		this.id = id;
 		this.type = type;
 		this.account = account;
 		this.date = date;
