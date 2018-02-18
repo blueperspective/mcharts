@@ -21,8 +21,6 @@ public class GlobalAggregator implements IAggregator {
 
 	private AccountingTree tree = null;
 
-	private boolean skipInternalTransactions = Conf.getProps().getBoolean(Conf.PROP_SKIP_INTERNAL_TRANSACTIONS, false);
-
 	/*
 	 * Ctors
 	 */
@@ -43,10 +41,6 @@ public class GlobalAggregator implements IAggregator {
 
 		// for each transaction
 		for (Transaction transaction : transactions) {
-
-			if (transaction.getLinkedTransaction() != 0 && skipInternalTransactions) {
-				continue;
-			}
 
 			// get the keys of the transactions: values of the dimensions
 
@@ -80,15 +74,5 @@ public class GlobalAggregator implements IAggregator {
 
 	public AccountingTree getTree() {
 		return tree;
-	}
-
-	@Override
-	public boolean getSkipInternalTransactions() {
-		return skipInternalTransactions;
-	}
-
-	@Override
-	public void setSkipInternalTransactions(boolean value) {
-		this.skipInternalTransactions = value;
 	}
 }

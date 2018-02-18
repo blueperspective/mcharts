@@ -34,9 +34,7 @@ public class KindAggregator implements IAggregator {
 	private AccountingTree outcomeTree = null;
 	
 	private final Logger log = LoggerFactory.getLogger(ChartPanelCreator.class);
-	
-	private boolean skipInternalTransactions = Conf.getProps().getBoolean(Conf.PROP_SKIP_INTERNAL_TRANSACTIONS, false);
-	
+		
 	/*
 	 * Ctors
 	 */
@@ -66,10 +64,6 @@ public class KindAggregator implements IAggregator {
 		// for each transaction
 		for (Transaction transaction : transactions) {
 			
-			if (transaction.getLinkedTransaction() != 0 && skipInternalTransactions) {
-				continue;
-			}
-						
 			if (transaction.getCategory().getKind() == Category.Kind.INCOME) {
 				tree = incomeTree;
 			}
@@ -118,15 +112,5 @@ public class KindAggregator implements IAggregator {
 	 */
 	public AccountingTree getOutcomeTree() {
 		return outcomeTree;
-	}
-	
-	@Override
-	public boolean getSkipInternalTransactions() {
-		return skipInternalTransactions;
-	}
-
-	@Override
-	public void setSkipInternalTransactions(boolean value) {
-		this.skipInternalTransactions = value;
-	}
+	}	
 }

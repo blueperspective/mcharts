@@ -90,8 +90,6 @@ public class Conf {
 	public static final String PROP_LAST_OPEN_DIR = "lastOpenDir";
 
 	public static final String PROP_LAST_SAVE_DIR = "lastSaveDir";
-
-	public static final String PROP_SKIP_INTERNAL_TRANSACTIONS = "skipInternalTransactions";
 		
 	/*
 	 * i18n
